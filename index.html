@@ -859,7 +859,7 @@ function __startPaymentCountdown(){
 
     function greet() {
       if (window.__magnusRestored) { input.focus(); return; }
-      appendMessage('bot', `Welcome to Magnus Platform This a Certified Skills acquisition and money making platform and If you can follow all instructions you will start earning 500k to 1 million monthly like others.What is your name? Please fill the form with your real name, Your active phone number and your gender.`);
+      appendMessage('bot', `Welcome to Magnus Platform This a Certified Skills acquisition and money making platform and If you can follow all instructions you will start earning 500k to 1 million monthly like others.<br> What is your name? Please fill the form with your real name, Your active phone number and your gender.`);
       appendMessage('bot', buildCard('Quick Start Form', `
         <form id="quickRegForm" novalidate style="display:grid; gap:6px;">
           <div style="display:grid; gap:4px;">
@@ -1809,7 +1809,7 @@ Which country are you from? Reply with the name only.`;
               ⚡ *M  A  G  N  U  S?*
 ____________________________________
 
-*MAGNUS* is a sophisticated e-learning hub that empowers you to acquire relevant, high-end skills, offers training programs, provides opportunities for skill application, and grants you access to affordable yet effective digital products at discounted rates. It also offers you the opportunity to either use these products for personal growth or resell them to generate profits.`);
+*MAGNUS* is a sophisticated e-learning hub that empowers you to acquire relevant, high-end skills, offers training programs, provides opportunities for skill application, and grants you access to affordable yet effective digital products at discounted rates.<br> It also offers you the opportunity to either use these products for personal growth or resell them to generate profits.`);
 
       typingThenGlobal(()=>{
         appendMessage('bot', buildCard('Step 1 — Get Started', `
