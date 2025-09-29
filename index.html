@@ -1351,12 +1351,7 @@ Which country are you from? Reply with the name only.`;
           input.value=''; input.focus(); return;
         }
           window.howItWorksShown = true;
-          appendMessage('bot', `${helloX} Here’s how <strong>Magnus Platform</strong> works:
-                                🛍️
-              ⚡ *M  A  G  N  U  S?*
-____________________________________
-
-*MAGNUS* is a sophisticated e-learning hub that empowers you to acquire relevant, high-end skills, offers training programs, provides opportunities for skill application, and grants you access to affordable yet effective digital products at discounted rates. It also offers you the opportunity to either use these products for personal growth or resell them to generate profits.`);
+          appendMessage('bot', `${helloX} Here’s how <strong>Magnus Platform</strong> works:`);
           typingThenGlobal(()=>{
             appendMessage('bot', buildCard('Step 1 — Get Started', `
               <ul>
