@@ -1804,7 +1804,12 @@ Which country are you from? Reply with the name only.`;
       const name = (window.__fullName || window.__firstName || '').trim();
       const hello = name ? `Nice to meet you, <strong>${escapeHTML(name)}</strong>!` : `Great!`;
       window.howItWorksShown = true;
-      appendMessage('bot', `${hello} Here’s how <strong>Magnus Platform</strong> works:`);
+      appendMessage('bot', `${hello} Here’s how <strong>Magnus Platform</strong> works:.
+                                🛍️
+              ⚡ *M  A  G  N  U  S?*
+____________________________________
+
+*MAGNUS* is a sophisticated e-learning hub that empowers you to acquire relevant, high-end skills, offers training programs, provides opportunities for skill application, and grants you access to affordable yet effective digital products at discounted rates. It also offers you the opportunity to either use these products for personal growth or resell them to generate profits.`);
 
       typingThenGlobal(()=>{
         appendMessage('bot', buildCard('Step 1 — Get Started', `
@@ -2296,9 +2301,9 @@ Which country are you from? Reply with the name only.`;
       window.__audioSeqRunning = true;
 
       var demos = [
-        { title: 'Demo Audio 1 (2:00)', src: 'MagnusDemo1.mp3' },
-        { title: 'Demo Audio 2 (2:00)', src: 'MagnusDemo2.mp3' },
-        { title: 'Demo Audio 3 (2:00)', src: 'MagnusDemo3.mp3' }
+        { title: 'Demo Audio 1 (2:00)', src: 'Vioceme.m4a' },
+        { title: 'Demo Audio 2 (2:00)', src: 'Vioceme1.m4a' }
+        //{ title: 'Demo Audio 3 (2:00)', src: 'MagnusDemo3.mp3' }
       ];
 
       demos.forEach(function(d, i){
