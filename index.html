@@ -910,7 +910,7 @@ function __startPaymentCountdown(){
         <div class="body">${bodyHTML}</div>
         ${withActions ? `<div class="actions">
             <button class="btn primary" data-action="choose">Explain More</button>
-            <button class="btn secondary" data-action="ready">Ask Questions</button>
+            <button class="btn secondary" data-action="ready">I am ready</button>
           </div>` : ``}
       </div>`;
     }
@@ -2552,7 +2552,7 @@ chat.addEventListener('click', (e) => {
                   <p style="margin:0 0 8px 0;">Watch this quick clip, then proceed when you're ready.</p>
                   <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls autoplay playsinline style="width:100%;height:auto;border:1px solid var(--border);border-radius:12px"></video>
                   <div class="actions" style="margin-top:10px;">
-                    <button class="btn secondary" data-action="ready">Ask Questions</button>
+                    <button class="btn secondary" data-action="ready">I am ready</button>
                   </div>
                 `, false));
               });
