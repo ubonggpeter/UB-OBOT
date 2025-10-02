@@ -3168,7 +3168,7 @@ document.addEventListener('click', function(ev){
         We just avoid touching anything in that card by scoping logic above. */
 
   /* 3) If there are explicit choose-business/pro/lite buttons, wire them to the generic choose flow */
-  document.addEventListener('click', function(e){
+  /*document.addEventListener('click', function(e){
     const btn = e.target.closest('button[data-action]');
     if (!btn) return;
     const act = btn.dataset.action;
@@ -3183,7 +3183,7 @@ document.addEventListener('click', function(ev){
         if (act === 'choose-lite') window.__selectedPlan = "Magnus Lite";
       }catch(err){}
     }
-  }, true);
+  }, true);**/
 })();
 </script>
 </body></html>
