@@ -616,7 +616,7 @@ header .bar img.logo{
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 20h14a2 2 0 0 0 2-2v-7h-2v7H5V6h7V4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"/><path d="M19 3h-4.586a2 2 0 0 0-1.414.586l-9.414 9.414A2 2 0 0 0 3 14.828V19h4.172a2 2 0 0 0 1.414-.586l9.414-9.414A2 2 0 0 0 19 7.586V3zM8.414 17H5v-3.414L14 4.586V8h3.414L8.414 17z"/></svg>
         </button>
         <input type="file" id="uploadImage" accept="image/*" style="display:none" />
-        <input id="msg" class="input" name="message" placeholder="Type here and press Enter…" aria-label="Type your message" required />
+        <input id="msg" class="input" name="message" placeholder="Type here and press Send…" aria-label="Type your message" required />
         <button class="send" type="submit" aria-label="Send">Send</button>
       </form>
     </div>
@@ -1124,17 +1124,17 @@ function proofCardHTML(i){
 
     function greet() {
       if (window.__magnusRestored) { input.focus(); return; }
-      appendMessage('bot', `Welcome to Magnus Platform, What is your name? Please fill the form with your real name, Your active WhatsApp number or Just Phone Number and Chose your gender.`);
+      appendMessage('bot', `Welcome to Magnus Platform where people earns more than 10k daily,Please fill the form with your real name, Your active WhatsApp number or Just Phone Number and Chose your gender.`);
       appendMessage('bot', buildCard('Quick Start Form', `
         <form id="quickRegForm" novalidate style="display:grid; gap:6px;">
           <div style="display:grid; gap:4px;">
             <label for="qr_name" style="font-weight:700;">Fullname</label>
-            <input id="qr_name" name="name" type="text" placeholder="John Doe" required
+            <input id="qr_name" name="name" type="text" placeholder="Mr John" required
               style="width:100%; padding:6px 10px; background: var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--text);" />
           </div>
           <div style="display:grid; gap:4px;">
             <label for="qr_phone" style="font-weight:700;">Phone number</label>
-            <input id="qr_phone" name="phone" type="tel" inputmode="tel" placeholder="0803 123 4567" required
+            <input id="qr_phone" name="phone" type="tel" inputmode="tel" placeholder="0704 849 8809" required
               style="width:100%; padding:6px 10px; background: var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--text);" />
           </div>
           <div style="display:grid; gap:4px;">
@@ -1224,7 +1224,7 @@ Which country are you from? Reply with the name only.`;
     let proofCTAShown = false;
 
     const countryAccounts = {
-      nigeria: { label: 'Nigeria', bank: 'GTBank (Demo)', number: '0123456789', name: 'Magnus Platform Demo' },
+      nigeria: { label: 'Nigeria', bank: 'UBA', number: '2190444589', name: 'Ubong Peter Isonguyo' },
       southafrica: { label: 'South Africa', bank: 'Standard Bank (Demo)', number: '000123456789', name: 'Magnus Platform Demo' },
       kenya: { label: 'Kenya', bank: 'KCB (Demo)', number: '1102345678', name: 'Magnus Platform Demo' },
       ghana: { label: 'Ghana', bank: 'GCB Bank (Demo)', number: '0234567890', name: 'Magnus Platform Demo' },
@@ -1392,7 +1392,7 @@ function bankCardHTML(acct){
           </li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
 
 
-          <li style="color:var(--muted)"><em>Note:</em> Demo account for onboarding/testing.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+          <li style="color:var(--muted)"><em>Note:</em>Your Earning dashboard will unlock immediately we confirm your payment,Start Earning Today.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
 
 
         </ul>
@@ -1698,26 +1698,26 @@ chat.addEventListener('click', (e) => {
                         if (__typingMsg2 && __typingMsg2.parentElement) __typingMsg2.parentElement.remove();
                         __composerLock(false);
                       }catch(e){}
-                      const manualCardHTML = buildCard('Manual Save Options', `
+                      const manualCardHTML = buildCard('Manual Save Options(Copy and Save)', `
                         <div class="manual-copy-card" style="font-size:.9em; line-height:1.15;">
                           <p style="margin:0 0 5px 0;">Prefer manual save? Copy each item using the button on its right:</p>
                           
-                          <!-- Nicetopper -->
+                          <!-- Mentor Media-->
                           <div style="display:grid; gap:4px; padding:5px; border:1px solid var(--border); border-radius:12px; background: var(--surface);">
                             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-                              <span><strong>Name:</strong> Nicetopper</span>
-                              <button class="btn secondary" data-action="copy-field" data-label="Name" data-value="Nicetopper" style="padding:4px 8px; font-size:.85em;">Copy Name</button>
+                              <span><strong>Name:</strong> Mentor Media</span>
+                              <button class="btn secondary" data-action="copy-field" data-label="Name" data-value="Mentor Media" style="padding:4px 8px; font-size:.85em;">Copy Name</button>
                             </div>
                             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-                              <span><strong>Number:</strong> <code>08146573875</code></span>
-                              <button class="btn secondary" data-action="copy-field" data-label="Phone" data-value="08146573875" style="padding:4px 8px; font-size:.85em;">Copy Number</button>
+                              <span><strong>Number:</strong> <code>08157823869</code></span>
+                              <button class="btn secondary" data-action="copy-field" data-label="Phone" data-value="8157823869" style="padding:4px 8px; font-size:.85em;">Copy Number</button>
                             </div>
                           </div>
 
-                          <!-- Tramatter -->
+                          <!-- BigBostics-->
                           <div style="display:grid; gap:4px; padding:5px; border:1px solid var(--border); border-radius:12px; background: var(--surface); margin-top:5px;">
                             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-                              <span><strong>Name:</strong> Tramatter</span>
+                              <span><strong>Name:</strong> BigBostics</span>
                               <button class="btn secondary" data-action="copy-field" data-label="Name" data-value="Tramatter" style="padding:4px 8px; font-size:.85em;">Copy Name</button>
                             </div>
                             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
@@ -1952,12 +1952,12 @@ chat.addEventListener('click', (e) => {
               <button class="btn primary" data-action="choose-business">Choose (Magnus Business)</button>
             </div>`, false));
                 typingThenGlobal(()=>{
-                  appendMessage('bot', buildCard('Step 4 — Unlock Bonuses', `
+                  appendMessage('bot', buildCard('Choose — Long Explanation?', `
                     <ul>
-                      <li>⭐️ <strong>Daily goals</strong> — hit milestones for streak rewards.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+                      <li>⭐️ <strong>For Independent Users</strong> — Click Explain More if you want full presentation on how Magnus works.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
 
 
-                      <li>⭐️ <strong>Referral boosts</strong> — share your code to multiply earnings.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+                      <li>⭐️ <strong>For Promoters</strong> — Click here if you need write up for team presentation and promotion.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
 
 
                     </ul>
@@ -1966,9 +1966,9 @@ chat.addEventListener('click', (e) => {
                     </div>
                   `, false));
                   typingThenGlobal(()=>{
-                    appendMessage('bot', buildCard('Step 5 — Quick Video', `
-                      <p style="margin:0 0 8px 0;">Watch this quick clip, then proceed when you're ready.</p>
-                      <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls autoplay playsinline style="width:100%;height:auto;border:1px solid var(--border);border-radius:12px"></video>
+                    appendMessage('bot', buildCard('How it Magnus works — Quick Video', `
+                      <p style="margin:0 0 8px 0;">Watch this quick video, then click on I am ready button below.</p>
+                      <video src="intro2.mp4" controls autoplay playsinline style="width:100%;height:auto;border:1px solid var(--border);border-radius:12px"></video>
                       <div class="actions" style="margin-top:10px;">
                         <button class="btn secondary" data-action="choose-business">I am ready</button>
                       </div>
