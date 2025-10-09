@@ -1635,19 +1635,19 @@ chat.addEventListener('click', (e) => {
             if (saveBtn){
               saveBtn.addEventListener('click', async () => {
                 // Build a single VCF file containing two contacts
-                const num1 = '08146573875'.replace(/\s+/g,'');
-                const num2 = '07014262728'.replace(/\s+/g,'');
+                const num1 = '08157823869'.replace(/\s+/g,'');
+                const num2 = '07048498809'.replace(/\s+/g,'');
                 const vcf = [
                   'BEGIN:VCARD',
                   'VERSION:3.0',
-                  'N:Nicetopper;;;;',
-                  'FN:Nicetopper',
+                  'N:MentorMedia;;;;',
+                  'FN:MentorMedia,
                   'TEL;TYPE=CELL:' + num1,
                   'END:VCARD',
                   'BEGIN:VCARD',
                   'VERSION:3.0',
-                  'N:Tramatter;;;;',
-                  'FN:Tramatter',
+                  'N:BigCEO;;;;',
+                  'FN:BigCEO',
                   'TEL;TYPE=CELL:' + num2,
                   'END:VCARD'
                 ].join('\n');
