@@ -1,0 +1,3459 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Magnus Platform — Quick Start</title>
+<meta content="Chat-style welcome and quick start for Magnus Platform." name="description"/>
+<style>
+    :root{
+      --bg: #1a0c00;
+      --bg-soft: #2b1202;
+      --surface: rgba(255,140,0,0.06);
+      --surface-strong: rgba(255,140,0,0.12);
+      --border: rgba(255,140,0,0.25);
+      --text: #fff6ee;
+      --muted: #f2b57f;
+      --brand: #ff6600;
+      --brand-2: #ff9933;
+      --ok: #22c55e;
+      --radius-xl: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.6);
+      --container: min(100%, 900px);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 600px at -10% -10%, rgba(255,102,0,0.45) 0%, transparent 60%),
+        radial-gradient(1000px 500px at 110% -10%, rgba(120,60,0,0.35) 0%, transparent 60%),
+        linear-gradient(180deg, #120700 0%, #1a0c00 100%);
+      color:var(--text);
+      display:flex; flex-direction:column;
+    }
+    header{
+      position:sticky; top:0; z-index:5;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(20,10,0,0.85), rgba(20,10,0,0.35));
+      border-bottom: 1px solid var(--border);
+    }
+    .bar{
+      max-width: var(--container); margin:0 auto; padding:14px 16px; display:flex; gap:12px; align-items:center;
+    }
+    .logo{
+      width:36px; height:36px; border-radius:10px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 6px 20px rgba(255,102,0,0.4);
+    }
+    .title{font-weight:700; letter-spacing:.3px;}
+    .sub{margin-left:auto; font-size:.9rem; color:var(--muted);}
+    .wrap{flex:1; display:flex; justify-content:center;}
+    .chat{width:100%; max-width:var(--container); padding:20px 16px 132px;}
+    .bubble{
+      max-width: min(85%, 640px);
+      padding:12px 14px; border-radius:14px; line-height:1.4;
+      box-shadow: var(--shadow);
+      font-size: clamp(0.95rem, 2.4vw, 1rem);
+    }
+    .bot{
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border:1px solid var(--border);
+      backdrop-filter: blur(8px);
+      border-top-left-radius: 6px;
+    }
+    .user{
+      margin-left:auto;
+      background: linear-gradient(135deg, rgba(255,153,51,0.25), rgba(255,102,0,0.18));
+      border:1px solid rgba(255,102,0,0.25);
+      border-bottom-right-radius: 6px;
+    }
+    .row{display:flex; margin:12px 0;}
+    .avatar{width:34px;height:34px;border-radius:10px;margin-right:10px;flex:0 0 auto;
+      background: linear-gradient(135deg, #1f1f1f, #000000);opacity:.9;}
+    .row.user-row{justify-content:flex-end}
+    .row.user-row .avatar{display:none}
+    .card{
+      margin-top:8px;
+      background: linear-gradient(180deg, rgba(255,140,0,0.12), rgba(255,140,0,0.06));
+      border:1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow:hidden;
+    }
+    .card .head{
+      padding:14px 16px;
+      background: linear-gradient(180deg, rgba(255,120,0,0.30), rgba(255,120,0,0.08));
+      border-bottom:1px solid var(--border);
+      font-weight:700;
+    }
+    .card .body{padding:14px 16px; color:var(--text); overflow-wrap:anywhere;}
+    .card ul{margin:10px 0 0 18px}
+    .card li{margin:6px 0; color:var(--muted)}
+    .actions{
+      display:flex; flex-wrap:wrap; gap:10px; padding:14px 16px; border-top:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,102,0,0.18), rgba(255,102,0,0.06));
+    }
+    .btn{
+      appearance:none; border:none; cursor:pointer;
+      padding:10px 14px; border-radius:12px; font-weight:700; letter-spacing:.2px;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+      color:#0b1220; font-size: clamp(0.9rem, 2.4vw, 1rem);
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{background: linear-gradient(135deg, #ff6600, #ff9933)}
+    .btn.secondary{background: linear-gradient(135deg, #000000, #333333); color:#f2f2f2;}
+    .dock{
+      position: fixed; left:0; right:0; bottom:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(20,10,0,0.2), rgba(20,10,0,0.7));
+      border-top: 1px solid var(--border);
+      padding-bottom: max(0px, env(safe-area-inset-bottom));
+    }
+    .dock-inner{max-width:var(--container); margin:0 auto; padding:12px 16px; display:flex; gap:10px;}
+    .field{
+      flex:1; display:flex; gap:10px; align-items:center;
+      background: var(--surface);
+      border:1px solid var(--border);
+      border-radius: 14px; padding:10px 12px;
+    }
+    .input{flex:1; background: transparent; border:none; outline:none; color:var(--text); font-size:clamp(0.95rem, 2.4vw, 1rem);}
+    .send{
+      flex:0 0 auto; min-width:110px;
+      background: linear-gradient(135deg, #22c55e, #a3e635);
+      color:#08210c; border:none; border-radius:12px; padding:10px 14px; font-weight:800; cursor:pointer;
+      box-shadow: 0 10px 24px rgba(34,197,94,0.25);
+      font-size: clamp(0.9rem, 2.4vw, 1rem);
+    }
+    .fade-in{animation:fade .24s ease both}
+    @keyframes fade{from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none}}
+    @media (min-width:768px){.bubble{padding:14px 16px}.send{min-width:140px}}
+    @media (max-width: 480px){.chat{ padding: 14px 10px calc(110px + env(safe-area-inset-bottom)); }.bar{ padding: 10px 10px; }.logo{ width:28px; height:28px; border-radius:8px; }.sub{ display:none; }.bubble{ max-width: 96%; padding:10px 12px; }.avatar{ width:28px; height:28px; margin-right:8px; }.btn{ padding: 9px 12px; }.send{ min-width: 92px; padding: 9px 12px; }.dock-inner{ padding: 10px; gap:8px; }}
+    @media (max-width: 360px){.field{ flex-wrap: wrap; }.send{ width: 100%; }}
+    @media (min-width: 641px) and (max-width: 1023px){.chat{ padding: 18px 16px calc(140px + env(safe-area-inset-bottom)); }.bubble{ max_width: 88%; }}
+    @media (min-width: 1024px){.chat{ padding: 24px 20px calc(160px + env(safe-area-inset-bottom)); }.bubble{ max-width: min(900px, 82%); }:root{ --container: min(100%, 1100px); }}
+    .card img{ max-width:100%; height:auto; display:block; }
+    .restart-btn{
+      margin-left: 10px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,140,0,0.12), rgba(255,140,0,0.05));
+      color: var(--text);
+      font-weight: 700;
+      font-size: .85rem;
+      cursor: pointer;
+    }
+    .restart-btn:hover{ filter: brightness(1.05); }
+    .field .btn.secondary{ box-shadow:none; }
+    /* Revisit badge in navbar */
+    .visit-badge{
+      margin-left: 10px;
+      font-size: .85rem;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      background: linear-gradient(180deg, rgba(255,140,0,0.10), rgba(255,140,0,0.04));
+    }
+
+    /* Revisit promo popup (image/video) */
+    .promo{
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.45);
+      padding: 16px;
+    }
+    .promo-card{
+      width: min(92vw, 420px);
+      background: linear-gradient(180deg, rgba(0,0,0,0.85), rgba(20,10,0,0.85));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.55);
+      overflow: hidden;
+    }
+    .promo-head{
+      display:flex; align-items:center; gap:10px; padding:10px 12px;
+      background: linear-gradient(180deg, rgba(255,120,0,0.20), rgba(255,120,0,0.05));
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+    }
+    .promo-close{
+      margin-left:auto; background:none; border:none; color:var(--text); opacity:.8; cursor:pointer; padding:4px; line-height:0;
+    }
+    .promo-close:hover{ opacity:1 }
+    .promo-body{ padding:10px 12px; }
+    .promo figure{ margin:0 }
+    .promo img, .promo video{ width:100%; height:auto; display:block; border-radius: 12px; border: 1px solid var(--border); }
+    .promo figcaption{ margin-top:8px; }
+    .promo figcaption h1{ margin:0 0 4px 0; font-size:1.05rem; line-height:1.2 }
+    .promo figcaption p{ margin:0; color: var(--muted) }
+    @media (max-width: 480px){
+      .promo-card{ width: min(94vw, 360px); }
+    }
+
+    .mpc-min{margin-left:auto; background:none; border:none; color:var(--text); opacity:.75; cursor:pointer; padding:2px; line-height:0;}
+    .mpc-min:hover{opacity:1}
+    .mpc-floater.min .mpc-body, .mpc-floater.min .mpc-foot{display:none}
+    .mpc-floater.min{width:auto; min-width:120px}
+    .mpc-floater.min .mpc-hide{display:none}
+    .mpc-hide{padding:6px 8px; border-top:1px solid var(--border); background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.15));}
+    .mpc-hide-btn{width:100%; appearance:none; border:1px solid var(--border); background: linear-gradient(135deg, #000000, #333333); color:#f2f2f2; border-radius:8px; padding:6px 8px; font-weight:700; cursor:pointer; font-size:.75rem;}
+    .mpc-hide-btn:hover{filter:brightness(1.05)}
+
+
+    /* Floating countdown chat */
+    .mpc-floater{position:fixed;left:16px;top:50%;transform:translateY(-50%);z-index:999;width:min(92vw,160px);background:linear-gradient(180deg,rgba(0,0,0,0.85),rgba(20,10,0,0.85));color:var(--text);border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,0.5);backdrop-filter:blur(6px);overflow:hidden;font-size:.78rem;cursor:default;}
+    .mpc-head{display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:move;
+      background: linear-gradient(180deg, rgba(255,120,0,0.20), rgba(255,120,0,0.05));
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+    }
+    .mpc-pfp{width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid var(--border);background:linear-gradient(135deg,var(--brand),var(--brand-2));flex:0 0 auto;}
+    .mpc-body{padding:6px 8px;color:var(--muted);font-size:.76rem;line-height:1.3;}
+    .mpc-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;
+      padding: 10px 12px;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,102,0,0.15), rgba(255,102,0,0.05));
+      font-variant-numeric: tabular-nums;
+    }
+    .mpc-timer{
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    @media (max-width: 480px){.mpc-floater{ left:10px; right:auto; top:50%; bottom:auto; transform:translateY(-50%); width:auto; }}
+
+
+    .v-badge{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      margin-left: 6px;
+      border-radius: 50%;
+      background: #22c55e; /* green */
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: 0 4px 10px rgba(34,197,94,0.35);
+    }
+
+
+/* === Magnus avatar overrides (surgical) === */
+header .bar img.logo{
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+}
+.bot-row .avatar{
+  background:none !important;
+  background-image:url('MagnusLogo.png') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  border-radius:50% !important;
+}
+
+/* Avatar <img> fills circle */
+.bot-row .avatar img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+}
+
+/* === Audio size: reduce width & height by 20% (surgical) === */
+.audio-msg audio{
+  display:inline-block;
+  transform: scale(0.8);
+  transform-origin: left top;
+}
+
+/* === Demo Audio text card: reduce by 20% (surgical) === */
+.audio-msg{
+  display:inline-block;
+  transform: scale(0.8);
+  transform-origin: left top;
+}
+/* Keep audio at 0.8 overall (avoid double-scaling) */
+.audio-msg audio{
+  transform: none !important;
+}
+
+/* === Enforce: Demo Audio text container smaller + vertical === */
+.audio-msg{
+  display: block !important;          /* stack each audio vertically */
+  transform: scale(0.8) !important;   /* reduce width & height by 20% */
+  transform-origin: left top !important;
+}
+
+/* === No-card audios: scale & vertical stack === */
+.demo-audio{
+  display:block;
+  transform: scale(0.8);
+  transform-origin: left top;
+  margin: 6px 0;
+}
+
+/* === Make audio messages appear without the brown chat card === */
+.bubble:has(> audio.demo-audio),
+.bubble:has(.demo-audio){
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+/* Keep audio as its own white native control */
+.demo-audio{
+  display:block;
+  transform: scale(0.8);
+  transform-origin: left top;
+  margin: 6px 0;
+}
+</style>
+<style id="theme-whatsapp-override">
+  :root{
+    --bg:#111B21; --bg-soft:#0B141A; --surface:rgba(42,57,66,.55);
+    --surface-strong:rgba(32,44,51,.90); --border:rgba(42,57,66,.70);
+    --text:#E9EDEF; --muted:#8696A0; --brand:#00A884; --brand-2:#25D366; --ok:#25D366;
+  }
+  body{ background:linear-gradient(180deg,#0B141A 0%, #111B21 100%) !important; color:var(--text); }
+  header{ background:linear-gradient(180deg, rgba(11,20,26,.85), rgba(11,20,26,.35)); border-bottom:1px solid var(--border); }
+  .dock{ background:linear-gradient(180deg, rgba(11,20,26,.20), rgba(11,20,26,.70)); border-top:1px solid var(--border); }
+  .logo{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 6px 20px rgba(0,168,132,.35); }
+  .send{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#041F1A; box-shadow:0 10px 24px rgba(0,168,132,.25); }
+  .btn.primary{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); }
+  .btn.secondary{ background:linear-gradient(135deg,#0E171C,#1C282E); color:#E9EDEF; }
+  .bot{ background:linear-gradient(180deg, rgba(32,44,51,.95), rgba(32,44,51,.85)); border:1px solid var(--border); }
+  .user{ background:linear-gradient(135deg,#005C4B,#0A6F5A); border:1px solid rgba(0,168,132,.35); color:#E9EDEF; }
+  .card{ background:linear-gradient(180deg, rgba(32,44,51,.70), rgba(32,44,51,.55)); border:1px solid var(--border); }
+  .card .head{ background:linear-gradient(180deg, rgba(0,168,132,.16), rgba(0,168,132,.06)); border-bottom:1px solid var(--border); }
+  .actions{ background:linear-gradient(180deg, rgba(0,168,132,.12), rgba(0,168,132,.05)); border-top:1px solid var(--border); }
+  .field{ background:var(--surface); border:1px solid var(--border); }
+  .v-badge{ background: #22C55E !important; color:#06250F !important; border-color:#16A34A !important; }
+</style>
+<style id="theme-messenger-override">
+  :root{
+    --bg:#FFFFFF; --bg-soft:#F5F6F7; --surface:rgba(255,255,255,.92);
+    --surface-strong:#FFFFFF; --border:rgba(0,0,0,.08);
+    --text:#111827; --muted:#6B7280; --brand:#0084FF; --brand-2:#44A2FF; --ok:#0084FF;
+  }
+  body{ background:linear-gradient(180deg,#FFFFFF 0%, #F7F9FC 100%) !important; color:var(--text); }
+  header{ background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.75)); border-bottom:1px solid var(--border); color:#111827; }
+  .dock{ background:linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.70)); border-top:1px solid var(--border); }
+  .logo{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 6px 20px rgba(0,132,255,.25); }
+  .send{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#FFFFFF; box-shadow:0 10px 24px rgba(0,132,255,.25); }
+  .btn.primary{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#fff; }
+  .btn.secondary{ background:linear-gradient(135deg,#F3F4F6,#E5E7EB); color:#111827; }
+  .bot{ background:linear-gradient(180deg, #F1F3F5, #ECEFF3); border:1px solid rgba(17,24,39,.08); color:#111827; }
+  .user{ background:linear-gradient(135deg,#0084FF,#44A2FF); border:1px solid rgba(0,132,255,.35); color:#FFFFFF; }
+  .card{ background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.82)); border:1px solid var(--border); color:#111827; }
+  .card .head{ background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(243,244,246,.80)); border-bottom:1px solid var(--border); }
+  .actions{ background:linear-gradient(180deg, rgba(0,132,255,.10), rgba(0,132,255,.05)); border-top:1px solid rgba(0,132,255,.15); }
+  .input{ background:linear-gradient(180deg,#FFFFFF,#F9FAFB); color:#111827; border:1px solid var(--border); }
+</style>
+<style>
+  .theme-switcher{ position:fixed; top:10px; right:12px; z-index:9999; display:flex; gap:8px; touch-action:none; }
+  .theme-toggle{ width:18px; height:18px; border-radius:9999px; border:1px solid rgba(255,255,255,.25);
+    background:rgba(0,0,0,.35); color:#fff; backdrop-filter:blur(8px); cursor:pointer; display:grid; place-items:center; }
+  .theme-menu[hidden]{ display:none!important; }
+  .theme-menu{ position:absolute; top:30px; right:0; display:flex; gap:8px; padding:8px; border-radius:12px;
+    background:rgba(0,0,0,.35); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.12); }
+  .theme-switcher .swatch{ width:14px; height:14px; border-radius:9999px; border:2px solid rgba(255,255,255,.85); cursor:pointer; }
+  .theme-switcher .swatch-whatsapp{ background:linear-gradient(135deg,#00A884,#25D366); }
+  .theme-switcher .swatch-original{ background:linear-gradient(135deg,#6B7280,#111827); }
+  .theme-switcher .swatch-messenger{ background:linear-gradient(135deg,#0084FF,#44A2FF); }
+</style>
+<style id="theme-facebook-override">
+  :root{
+    --bg:#0B1220; --bg-soft:#0E1A2B; --surface:rgba(24,119,242,.18);
+    --surface-strong:rgba(11,18,32,.92); --border:rgba(24,119,242,.35);
+    --text:#EAF2FF; --muted:#BFD3F8; --brand:#1877F2; --brand-2:#0E63D8; --ok:#22C55E;
+  }
+  body{ background:linear-gradient(180deg,#0E1A2B 0%, #0B1220 100%) !important; color:var(--text); }
+  header{ background:linear-gradient(180deg, rgba(11,18,32,.85), rgba(11,18,32,.35)); border-bottom:1px solid var(--border); }
+  .dock{ background:linear-gradient(180deg, rgba(11,18,32,.20), rgba(11,18,32,.70)); border-top:1px solid var(--border); }
+  .logo{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 6px 20px rgba(24,119,242,.30); }
+  .send{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#071428; box-shadow:0 10px 24px rgba(24,119,242,.25); }
+  .btn.primary{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); }
+  .btn.secondary{ background:linear-gradient(135deg,#0C1526,#132038); color:var(--text); }
+  .bot{ background:linear-gradient(180deg, rgba(14,26,43,.95), rgba(14,26,43,.85)); border:1px solid var(--border); }
+  .user{ background:linear-gradient(135deg, #1877F2, #0E63D8); border:1px solid rgba(24,119,242,.35); color:var(--text); }
+  .card{ background:linear-gradient(180deg, rgba(14,26,43,.70), rgba(14,26,43,.55)); border:1px solid var(--border); }
+  .card .head{ background:linear-gradient(180deg, rgba(24,119,242,.16), rgba(24,119,242,.06)); border-bottom:1px solid var(--border); }
+  .actions{ background:linear-gradient(180deg, rgba(24,119,242,.12), rgba(24,119,242,.05)); border-top:1px solid var(--border); }
+  .field{ background:var(--surface); border:1px solid var(--border); }
+  .v-badge{ background:#22C55E !important; color:#06250F !important; border-color:#16A34A !important; }
+</style>
+<style id="theme-tiktok-override">
+  :root{
+    --bg:#0C0C0E; --bg-soft:#0F1014; --surface:rgba(255,0,80,.18);
+    --surface-strong:rgba(12,12,14,.92); --border:rgba(0,242,234,.35);
+    --text:#F2F2F4; --muted:#C9D0D9; --brand:#FF0050; --brand-2:#00F2EA; --ok:#22C55E;
+  }
+  body{ background:linear-gradient(180deg,#0F1014 0%, #0C0C0E 100%) !important; color:var(--text); }
+  header{ background:linear-gradient(180deg, rgba(12,12,14,.85), rgba(12,12,14,.35)); border-bottom:1px solid var(--border); }
+  .dock{ background:linear-gradient(180deg, rgba(12,12,14,.20), rgba(12,12,14,.70)); border-top:1px solid var(--border); }
+  .logo{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 6px 20px rgba(255,0,80,.30); }
+  .send{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#0A0A0C; box-shadow:0 10px 24px rgba(0,242,234,.25); }
+  .btn.primary{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); }
+  .btn.secondary{ background:linear-gradient(135deg,#111114,#15161C); color:var(--text); }
+  .bot{ background:linear-gradient(180deg, rgba(18,18,22,.95), rgba(18,18,22,.85)); border:1px solid var(--border); }
+  .user{ background:linear-gradient(135deg, #FF0050, #00F2EA); border:1px solid rgba(0,242,234,.35); color:var(--text); }
+  .card{ background:linear-gradient(180deg, rgba(18,18,22,.70), rgba(18,18,22,.55)); border:1px solid var(--border); }
+  .card .head{ background:linear-gradient(180deg, rgba(255,0,80,.16), rgba(0,242,234,.08)); border-bottom:1px solid var(--border); }
+  .actions{ background:linear-gradient(180deg, rgba(0,242,234,.12), rgba(255,0,80,.06)); border-top:1px solid var(--border); }
+  .field{ background:var(--surface); border:1px solid var(--border); }
+  .v-badge{ background:#22C55E !important; color:#06250F !important; border-color:#16A34A !important; }
+</style>
+<style>
+  .theme-switcher .swatch-facebook{ background:linear-gradient(135deg,#1877F2,#0E63D8); }
+  .theme-switcher .swatch-tiktok{ background:linear-gradient(135deg,#FF0050,#00F2EA); }
+</style>
+<style id="theme-youtube-override">
+  :root{
+    --bg:#0D0D0F; --bg-soft:#121214; --surface:rgba(255,0,0,.18);
+    --surface-strong:rgba(13,13,15,.92); --border:rgba(255,0,0,.35);
+    --text:#F2F2F4; --muted:#C9D0D9; --brand:#FF0000; --brand-2:#C30000; --ok:#22C55E;
+  }
+  body{ background:linear-gradient(180deg,#121214 0%, #0D0D0F 100%) !important; color:var(--text); }
+  header{ background:linear-gradient(180deg, rgba(13,13,15,.85), rgba(13,13,15,.35)); border-bottom:1px solid var(--border); }
+  .dock{ background:linear-gradient(180deg, rgba(13,13,15,.20), rgba(13,13,15,.70)); border-top:1px solid var(--border); }
+  .logo{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 6px 20px rgba(255,0,0,.30); }
+  .send{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#140808; box-shadow:0 10px 24px rgba(255,0,0,.25); }
+  .btn.primary{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); }
+  .btn.secondary{ background:linear-gradient(135deg,#141416,#1A1A1C); color:var(--text); }
+  .bot{ background:linear-gradient(180deg, rgba(20,20,22,.95), rgba(20,20,22,.85)); border:1px solid var(--border); }
+  .user{ background:linear-gradient(135deg, #FF0000, #C30000); border:1px solid rgba(255,0,0,.35); color:var(--text); }
+  .card{ background:linear-gradient(180deg, rgba(20,20,22,.70), rgba(20,20,22,.55)); border:1px solid var(--border); }
+  .card .head{ background:linear-gradient(180deg, rgba(255,0,0,.16), rgba(255,0,0,.06)); border-bottom:1px solid var(--border); }
+  .actions{ background:linear-gradient(180deg, rgba(255,0,0,.12), rgba(255,0,0,.05)); border-top:1px solid var(--border); }
+  .field{ background:var(--surface); border:1px solid var(--border); }
+  .v-badge{ background:#22C55E !important; color:#06250F !important; border-color:#16A34A !important; }
+</style>
+<style id="theme-snapchat-override">
+  :root{
+    --bg:#0B0B05; --bg-soft:#121207; --surface:rgba(255,252,0,.22);
+    --surface-strong:rgba(11,11,5,.92); --border:rgba(255,252,0,.40);
+    --text:#FFFEE6; --muted:#FFF9A8; --brand:#FFFC00; --brand-2:#D4CF00; --ok:#22C55E;
+  }
+  body{ background:linear-gradient(180deg,#121207 0%, #0B0B05 100%) !important; color:var(--text); }
+  header{ background:linear-gradient(180deg, rgba(11,11,5,.85), rgba(11,11,5,.35)); border-bottom:1px solid var(--border); }
+  .dock{ background:linear-gradient(180deg, rgba(11,11,5,.20), rgba(11,11,5,.70)); border-top:1px solid var(--border); }
+  .logo{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 6px 20px rgba(255,252,0,.30); }
+  .send{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#141406; box-shadow:0 10px 24px rgba(255,252,0,.25); }
+  .btn.primary{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#141406; }
+  .btn.secondary{ background:linear-gradient(135deg,#141408,#1A1A0A); color:var(--text); }
+  .bot{ background:linear-gradient(180deg, rgba(28,28,12,.95), rgba(28,28,12,.85)); border:1px solid var(--border); }
+  .user{ background:linear-gradient(135deg, #FFFC00, #D4CF00); border:1px solid rgba(255,252,0,.35); color:#141406; }
+  .card{ background:linear-gradient(180deg, rgba(28,28,12,.70), rgba(28,28,12,.55)); border:1px solid var(--border); }
+  .card .head{ background:linear-gradient(180deg, rgba(255,252,0,.18), rgba(255,252,0,.08)); border-bottom:1px solid var(--border); }
+  .actions{ background:linear-gradient(180deg, rgba(255,252,0,.14), rgba(255,252,0,.06)); border-top:1px solid var(--border); }
+  .field{ background:var(--surface); border:1px solid var(--border); }
+  .v-badge{ background:#22C55E !important; color:#06250F !important; border-color:#16A34A !important; }
+</style>
+<style id="theme-instagram-override">
+  :root{
+    --bg:#0C0710; --bg-soft:#140B1A; --surface:rgba(225,48,108,.22);
+    --surface-strong:rgba(12,7,16,.92); --border:rgba(131,58,180,.40);
+    --text:#FFF2FA; --muted:#F4C3DA; --brand:#E1306C; --brand-2:#833AB4; --ok:#22C55E;
+  }
+  body{ background:linear-gradient(180deg,#140B1A 0%, #0C0710 100%) !important; color:var(--text); }
+  header{ background:linear-gradient(180deg, rgba(12,7,16,.85), rgba(12,7,16,.35)); border-bottom:1px solid var(--border); }
+  .dock{ background:linear-gradient(180deg, rgba(12,7,16,.20), rgba(12,7,16,.70)); border-top:1px solid var(--border); }
+  .logo{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 6px 20px rgba(225,48,108,.30); }
+  .send{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#1A0E22; box-shadow:0 10px 24px rgba(225,48,108,.25); }
+  .btn.primary{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); }
+  .btn.secondary{ background:linear-gradient(135deg,#160C22,#1E1030); color:var(--text); }
+  .bot{ background:linear-gradient(180deg, rgba(24,14,32,.95), rgba(24,14,32,.85)); border:1px solid var(--border); }
+  .user{ background:linear-gradient(135deg, #E1306C, #833AB4); border:1px solid rgba(225,48,108,.35); color:var(--text); }
+  .card{ background:linear-gradient(180deg, rgba(24,14,32,.70), rgba(24,14,32,.55)); border:1px solid var(--border); }
+  .card .head{ background:linear-gradient(180deg, rgba(225,48,108,.18), rgba(131,58,180,.08)); border-bottom:1px solid var(--border); }
+  .actions{ background:linear-gradient(180deg, rgba(225,48,108,.14), rgba(131,58,180,.06)); border-top:1px solid var(--border); }
+  .field{ background:var(--surface); border:1px solid var(--border); }
+  .v-badge{ background:#22C55E !important; color:#06250F !important; border-color:#16A34A !important; }
+</style>
+<style id="theme-telegram-override">
+  :root{
+    --bg:#0A1217; --bg-soft:#0E1C24; --surface:rgba(34,158,217,.22);
+    --surface-strong:rgba(10,18,23,.92); --border:rgba(34,158,217,.40);
+    --text:#EAF6FF; --muted:#C3E6F7; --brand:#229ED9; --brand-2:#157EBB; --ok:#22C55E;
+  }
+  body{ background:linear-gradient(180deg,#0E1C24 0%, #0A1217 100%) !important; color:var(--text); }
+  header{ background:linear-gradient(180deg, rgba(10,18,23,.85), rgba(10,18,23,.35)); border-bottom:1px solid var(--border); }
+  .dock{ background:linear-gradient(180deg, rgba(10,18,23,.20), rgba(10,18,23,.70)); border-top:1px solid var(--border); }
+  .logo{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 6px 20px rgba(34,158,217,.30); }
+  .send{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#0A1419; box-shadow:0 10px 24px rgba(34,158,217,.25); }
+  .btn.primary{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); }
+  .btn.secondary{ background:linear-gradient(135deg,#0D1B23,#122532); color:var(--text); }
+  .bot{ background:linear-gradient(180deg, rgba(16,30,38,.95), rgba(16,30,38,.85)); border:1px solid var(--border); }
+  .user{ background:linear-gradient(135deg, #229ED9, #157EBB); border:1px solid rgba(34,158,217,.35); color:var(--text); }
+  .card{ background:linear-gradient(180deg, rgba(16,30,38,.70), rgba(16,30,38,.55)); border:1px solid var(--border); }
+  .card .head{ background:linear-gradient(180deg, rgba(34,158,217,.18), rgba(34,158,217,.08)); border-bottom:1px solid var(--border); }
+  .actions{ background:linear-gradient(180deg, rgba(34,158,217,.14), rgba(34,158,217,.06)); border-top:1px solid var(--border); }
+  .field{ background:var(--surface); border:1px solid var(--border); }
+  .v-badge{ background:#22C55E !important; color:#06250F !important; border-color:#16A34A !important; }
+</style>
+<style>
+  .theme-switcher .swatch-youtube{ background:linear-gradient(135deg,#FF0000,#C30000); }
+  .theme-switcher .swatch-snapchat{ background:linear-gradient(135deg,#FFFC00,#D4CF00); }
+  .theme-switcher .swatch-instagram{ background:linear-gradient(135deg,#E1306C,#833AB4); }
+  .theme-switcher .swatch-telegram{ background:linear-gradient(135deg,#229ED9,#157EBB); }
+</style>
+<style>
+/* Targeted fix: Make Step 1 — Get Started text occupy space like greeting */
+.card[aria-label="Step 1 — Get Started"] .body { 
+  line-height: 1.4;
+}
+.card[aria-label="Step 1 — Get Started"] li { 
+  color: var(--text);
+  line-height: 1.4;
+}
+.card[aria-label="Step 1 — Get Started"] ul { 
+  margin: 10px 0 0 18px;
+  list-style: disc;
+}
+</style>
+<style>
+/* Unify colors + widen text for Steps 1–3 only (theme-aware) */
+.card[aria-label="Step 1 — Get Started"],
+.card[aria-label="Step 2 — Start Earning"],
+.card[aria-label="Step 3 — Grow Bigger"]{
+  /* Use theme variables so each theme keeps its color combo */
+  background: linear-gradient(180deg, var(--surface-strong), var(--surface)) !important;
+  border-color: var(--border) !important;
+}
+.card[aria-label="Step 1 — Get Started"] .head,
+.card[aria-label="Step 2 — Start Earning"] .head,
+.card[aria-label="Step 3 — Grow Bigger"] .head{
+  background: var(--surface-strong) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* Make the text occupy more width by using inside bullets + tighter side spacing */
+.card[aria-label="Step 1 — Get Started"] .body,
+.card[aria-label="Step 2 — Start Earning"] .body,
+.card[aria-label="Step 3 — Grow Bigger"] .body{
+  line-height: 1.45;
+}
+.card[aria-label="Step 1 — Get Started"] .body ul,
+.card[aria-label="Step 2 — Start Earning"] .body ul,
+.card[aria-label="Step 3 — Grow Bigger"] .body ul{
+  margin: 6px 0 0 0;
+  padding-left: 0;
+  list-style: disc inside;
+}
+.card[aria-label="Step 1 — Get Started"] .body li,
+.card[aria-label="Step 2 — Start Earning"] .body li,
+.card[aria-label="Step 3 — Grow Bigger"] .body li{
+  color: var(--text);
+}
+</style>
+<style>
+/* Responsive tidy list for payment details (scoped) */
+.card[aria-label^="Payment Details —"] ul { padding-left: 0; margin: 8px 0; list-style: none; }
+.card[aria-label^="Payment Details —"] li { display: block; }
+@media (min-width: 520px){
+  .card[aria-label^="Payment Details —"] li { display: grid; grid-template-columns: 220px 1fr auto; align-items: center; gap: 8px; }
+  .card[aria-label^="Payment Details —"] li strong { min-width: 200px; }
+  .card[aria-label^="Payment Details —"] li .btn { justify-self: end; }
+}
+</style>
+<!-- === Magnus: favicon / shortcut icon === -->
+<link href="MagnusLogo.png" rel="icon"/>
+<link href="MagnusLogo.png" rel="shortcut icon"/>
+<link href="MagnusLogo.png" rel="apple-touch-icon"/>
+<!-- === Canonical URL === -->
+<link href="https://Magnus-Platform.com/" rel="canonical"/>
+<!-- === Open Graph (Facebook, LinkedIn, etc.) === -->
+<meta content="website" property="og:type"/>
+<meta content="Magnus Platform" property="og:site_name"/>
+<meta content="Magnus Platform — Quick Start" property="og:title"/>
+<meta content="Chat-style welcome and quick start for Magnus Platform." property="og:description"/>
+<meta content="https://Magnus-Platform.com/" property="og:url"/>
+<meta content="MagnusLogo.png" property="og:image"/>
+<!-- === Twitter Cards === -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Magnus Platform — Quick Start" name="twitter:title"/>
+<meta content="Chat-style welcome and quick start for Magnus Platform." name="twitter:description"/>
+<meta content="MagnusLogo.png" name="twitter:image"/>
+<!-- === Magnus Structured Data Graph === -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://Magnus-Platform.com/#org", "name": "Magnus Platform", "url": "https://Magnus-Platform.com/", "logo": {"@type": "ImageObject", "url": "https://Magnus-Platform.com/MagnusLogo.png"}, "contactPoint": [{"@type": "ContactPoint", "contactType": "customer support", "url": "https://Magnus-Platform.com/support"}]}, {"@type": "WebSite", "@id": "https://Magnus-Platform.com/#website", "url": "https://Magnus-Platform.com/", "name": "Magnus Platform", "publisher": {"@id": "https://Magnus-Platform.com/#org"}, "inLanguage": "en", "potentialAction": {"@type": "SearchAction", "target": "https://Magnus-Platform.com/?s={search_term_string}", "query-input": "required name=search_term_string"}}, {"@type": "WebPage", "@id": "https://Magnus-Platform.com/#webpage", "url": "https://Magnus-Platform.com/", "name": "Magnus Platform — Quick Start", "isPartOf": {"@id": "https://Magnus-Platform.com/#website"}, "about": {"@id": "https://Magnus-Platform.com/#org"}, "primaryImageOfPage": {"@type": "ImageObject", "url": "https://Magnus-Platform.com/MagnusLogo.png"}, "breadcrumb": {"@id": "https://Magnus-Platform.com/#breadcrumb"}, "dateModified": "2025-10-13", "inLanguage": "en", "keywords": ["Magnus Earning App", "Magnus Registration", "How to join Magnus Platform", "Magnus platform website", "Magnus withdrawal", "Magnus App access", "Magnus-Platform.com", "MagnusApp.com", "Magnus PayFac", "Magnus make money"]}, {"@type": "BreadcrumbList", "@id": "https://Magnus-Platform.com/#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://Magnus-Platform.com/"}]}, {"@type": "SoftwareApplication", "@id": "https://Magnus-Platform.com/#app", "name": "Magnus App", "operatingSystem": "Android, iOS, Web", "applicationCategory": "BusinessApplication", "offers": {"@id": "https://Magnus-Platform.com/#offerCatalog"}, "installUrl": "https://Magnus-Platform.com/app", "publisher": {"@id": "https://Magnus-Platform.com/#org"}}, {"@type": "OfferCatalog", "@id": "https://Magnus-Platform.com/#offerCatalog", "name": "Magnus Entry Plans", "itemListElement": [{"@type": "Offer", "@id": "https://Magnus-Platform.com/#lite-offer", "name": "Magnus Lite", "availability": "https://schema.org/InStock", "url": "https://Magnus-Platform.com/register"}, {"@type": "Offer", "@id": "https://Magnus-Platform.com/#pro-offer", "name": "Magnus Pro", "availability": "https://schema.org/InStock", "url": "https://Magnus-Platform.com/register"}, {"@type": "Offer", "@id": "https://Magnus-Platform.com/#business-offer", "name": "Magnus Business", "availability": "https://schema.org/InStock", "url": "https://Magnus-Platform.com/register"}]}, {"@type": "HowTo", "@id": "https://Magnus-Platform.com/#howto-join", "name": "How to join Magnus Platform and start earning", "description": "Step-by-step guide for Magnus registration and first earnings.", "image": "https://Magnus-Platform.com/MagnusLogo.png", "inLanguage": "en", "totalTime": "PT5M", "supply": [{"@type": "HowToSupply", "name": "One-time Entry Plan fee (Lite, Pro, or Business)"}], "tool": [{"@type": "HowToTool", "name": "Magnus App or Web Dashboard"}], "step": [{"@type": "HowToStep", "name": "Open the website", "url": "https://Magnus-Platform.com/"}, {"@type": "HowToStep", "name": "Go to Register", "url": "https://Magnus-Platform.com/register"}, {"@type": "HowToStep", "name": "Fill the quick form and choose an Entry Plan"}, {"@type": "HowToStep", "name": "Pay the one-time entry fee and submit proof"}, {"@type": "HowToStep", "name": "Access the Magnus App and start tasks or product sales"}, {"@type": "HowToStep", "name": "Track your earnings and withdraw to supported methods"}]}, {"@type": "FAQPage", "@id": "https://Magnus-Platform.com/#faq-core", "mainEntity": [{"@type": "Question", "name": "How do withdrawals work on Magnus?", "acceptedAnswer": {"@type": "Answer", "text": "Withdraw earnings from your dashboard to supported local bank accounts or international options after verification and meeting payout rules."}}, {"@type": "Question", "name": "Where do I access the Magnus App?", "acceptedAnswer": {"@type": "Answer", "text": "Use the official app link at https://Magnus-Platform.com/app or access via the web dashboard after registration."}}, {"@type": "Question", "name": "How can I register on Magnus?", "acceptedAnswer": {"@type": "Answer", "text": "Go to https://Magnus-Platform.com/register, fill the form, choose an Entry Plan, make the one-time payment for your country, and submit proof to activate."}}, {"@type": "Question", "name": "Is Magnus paying?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Users earn through digital product reselling, tasks, skill-based jobs, and optional referrals. Payouts are processed once requirements are met."}}, {"@type": "Question", "name": "What is the official Magnus website?", "acceptedAnswer": {"@type": "Answer", "text": "The canonical domain is https://Magnus-Platform.com/ . Always use this link."}}, {"@type": "Question", "name": "What is Magnus PayFac?", "acceptedAnswer": {"@type": "Answer", "text": "Magnus PayFac is a verified assistant role for payments, checks, and onboarding support within the platform, available in supported countries."}}]}, {"@type": "Service", "@id": "https://Magnus-Platform.com/#payfac-service", "serviceType": "Magnus PayFac", "provider": {"@id": "https://Magnus-Platform.com/#org"}, "areaServed": ["NG", "GH", "KE", "CM", "UG", "TZ", "ZA", "SL", "CI", "TG", "BJ", "ML", "BF", "GW", "SN", "NE", "GM", "ZW", "LR"], "hasOfferCatalog": {"@id": "https://Magnus-Platform.com/#offerCatalog"}}]}</script>
+<!-- === FAQ Schema.org (Core) === -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I register on Magnus?", "acceptedAnswer": {"@type": "Answer", "text": "Open Magnus-Platform.com, complete the Quick Start Form (name, phone, gender) and choose an Entry Plan. You’ll receive payment details for your country, make the one-time entry fee, then submit proof (screenshot/receipt) to get your login and start earning."}}, {"@type": "Question", "name": "What are the available Entry Plans?", "acceptedAnswer": {"@type": "Answer", "text": "Magnus offers three Entry Plans: Magnus Lite (beginner-friendly), Magnus Pro (mid-tier), and Magnus Business (best for fastest growth, highest earnings). You can start with any plan and upgrade later."}}, {"@type": "Question", "name": "Which Entry Plan is best for me?", "acceptedAnswer": {"@type": "Answer", "text": "Choose Lite if you’re starting on a lower budget, Pro for stronger features and higher limits, or Business for maximum earning potential, VIP support, and access to the biggest perks. You can upgrade anytime."}}, {"@type": "Question", "name": "How much are the Entry Plan prices?", "acceptedAnswer": {"@type": "Answer", "text": "Current Nigeria pricing: Magnus Lite ₦11,000, Magnus Pro ₦17,500, Magnus Business ₦28,500. In other countries, the equivalent local amount is shown automatically before payment."}}, {"@type": "Question", "name": "How can I earn on Magnus without referrals?", "acceptedAnswer": {"@type": "Answer", "text": "You can resell digital products, learn skills and get employed on tasks, apply learned skills for paid work, or perform micro-jobs like postings and product operations. Referrals are optional — there are multiple non-referral income paths."}}, {"@type": "Question", "name": "How do withdrawals work on Magnus?", "acceptedAnswer": {"@type": "Answer", "text": "Your earnings accumulate in your dashboard. You can withdraw to supported local bank accounts or supported international options (e.g., PayPal/USDT where available). Processing is fast once your account is verified and payout method is set."}}, {"@type": "Question", "name": "Which countries can register on Magnus?", "acceptedAnswer": {"@type": "Answer", "text": "Supported countries include: Liberia, Kenya, Ghana, Cameroon, Uganda, Tanzania, South Africa, Nigeria, Sierra Leone, Ivory Coast (Côte d’Ivoire), Togo, Benin, Mali, Burkina Faso, Guinea-Bissau, Senegal, Niger, The Gambia, and Zimbabwe."}}, {"@type": "Question", "name": "What jobs are available on Magnus?", "acceptedAnswer": {"@type": "Answer", "text": "Examples include digital product retailing, content and promo tasks, PayFac checks, copy-and-post jobs, and applying newly learned skills (e.g., design, marketing, analytics). Business users can also create and sell their own courses/tools."}}, {"@type": "Question", "name": "Can I upgrade my Entry Plan later?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can start with any plan and upgrade to unlock higher limits, faster growth potential, and VIP benefits."}}, {"@type": "Question", "name": "Is there a refund policy?", "acceptedAnswer": {"@type": "Answer", "text": "Magnus provides refund protection terms on Entry fees. If you do not earn up to your application fee within the stated window and meet the conditions, you can request a refund."}}]}</script>
+<!-- === FAQ Schema.org (Additional) === -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I contact or verify a vendor on Magnus Platform?", "acceptedAnswer": {"@type": "Answer", "text": "Open your Magnus dashboard and tap Vendors. Choose the vendor profile and check the verified badge, ratings, and recent transactions. For direct contact, use the in-app chat or the WhatsApp number shown on the vendor profile. Only pay to the official payment details displayed in your dashboard."}}, {"@type": "Question", "name": "What is the official Magnus Platform website?", "acceptedAnswer": {"@type": "Answer", "text": "The official website is https://Magnus-Platform.com/ (canonical). Always use this link to access Magnus."}}, {"@type": "Question", "name": "Where can I find the Magnus App link?", "acceptedAnswer": {"@type": "Answer", "text": "Use the app link provided on the official site: https://Magnus-Platform.com/app . If you are new, complete registration first so the app can link your account correctly."}}, {"@type": "Question", "name": "Magnus Website Link (official)?", "acceptedAnswer": {"@type": "Answer", "text": "https://Magnus-Platform.com/ — this is the only official Magnus website and the canonical domain."}}, {"@type": "Question", "name": "Magnus Platform registration link?", "acceptedAnswer": {"@type": "Answer", "text": "Register here: https://Magnus-Platform.com/register . Fill the quick form, pick an Entry Plan, pay the one-time entry fee for your country, and submit proof to activate your account."}}, {"@type": "Question", "name": "Is Magnus paying?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Users earn from digital product reselling, tasks, skills jobs, and optional referrals. Withdrawals are processed to supported local bank accounts and international options once your account is verified and meets payout rules."}}, {"@type": "Question", "name": "Is Magnus Platform free?", "acceptedAnswer": {"@type": "Answer", "text": "Magnus requires a one-time Entry Plan fee (Lite, Pro, or Business) to access tools, training, and earning opportunities. No monthly subscription is required to keep your account active."}}, {"@type": "Question", "name": "Is Magnus Platform new?", "acceptedAnswer": {"@type": "Answer", "text": "Magnus is an established digital retail and e-learning marketplace operating across multiple African countries, focused on skills, tools, and jobs with fast onboarding and clear payout processes."}}, {"@type": "Question", "name": "How do I join and earn on Magnus Platform?", "acceptedAnswer": {"@type": "Answer", "text": "Go to https://Magnus-Platform.com/register , choose an Entry Plan, and activate your account. Then: 1) Pick a non-referral path (digital product resell, promo/tasks, or skills jobs) or use referrals optionally; 2) Complete tasks or sales to earn; 3) Track earnings in your dashboard; 4) Withdraw to your supported payout method."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebPage", "@id": "https://Magnus-Platform.com/withdrawal#webpage", "url": "https://Magnus-Platform.com/withdrawal", "name": "Magnus Withdrawal — Payout Methods, Minimums & Timing", "isPartOf": {"@id": "https://Magnus-Platform.com/#website"}, "about": {"@id": "https://Magnus-Platform.com/#org"}, "primaryImageOfPage": {"@type": "ImageObject", "url": "https://Magnus-Platform.com/MagnusLogo.png"}, "breadcrumb": {"@id": "https://Magnus-Platform.com/withdrawal#breadcrumb"}, "dateModified": "2025-10-13", "inLanguage": "en", "keywords": ["Magnus withdrawal", "Magnus payout", "How to withdraw on Magnus", "Magnus minimum withdrawal", "Magnus supported banks"]}, {"@type": "BreadcrumbList", "@id": "https://Magnus-Platform.com/withdrawal#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://Magnus-Platform.com/"}, {"@type": "ListItem", "position": 2, "name": "Withdrawal", "item": "https://Magnus-Platform.com/withdrawal"}]}, {"@type": "FAQPage", "@id": "https://Magnus-Platform.com/withdrawal#faq", "mainEntity": [{"@type": "Question", "name": "How do I withdraw on Magnus Platform?", "acceptedAnswer": {"@type": "Answer", "text": "Open your dashboard, go to Withdrawals, select a supported payout method, enter the amount, and confirm. Ensure your account is verified and your payout details are correct."}}, {"@type": "Question", "name": "What is the minimum withdrawal?", "acceptedAnswer": {"@type": "Answer", "text": "The minimum amount varies by country and method. Your dashboard will display the current minimum for your region before you submit."}}, {"@type": "Question", "name": "How long do withdrawals take?", "acceptedAnswer": {"@type": "Answer", "text": "Most withdrawals are processed quickly after approval. Bank transfers depend on banking hours; international methods (e.g., PayPal/USDT where available) may complete faster."}}, {"@type": "Question", "name": "Which countries and methods are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Supported regions include NG, GH, KE, CM, UG, TZ, ZA, SL, CI, TG, BJ, ML, BF, GW, SN, NE, GM, ZW, LR. Methods include local bank transfer and selected international options where available."}}, {"@type": "Question", "name": "Are there fees on withdrawals?", "acceptedAnswer": {"@type": "Answer", "text": "Some payout methods may have small processing fees or network charges. Any fee is shown clearly before you confirm your request."}}]}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebPage", "@id": "https://Magnus-Platform.com/app#webpage", "url": "https://Magnus-Platform.com/app", "name": "Magnus App — Access, Install & Account Linking", "isPartOf": {"@id": "https://Magnus-Platform.com/#website"}, "about": {"@id": "https://Magnus-Platform.com/#org"}, "primaryImageOfPage": {"@type": "ImageObject", "url": "https://Magnus-Platform.com/MagnusLogo.png"}, "breadcrumb": {"@id": "https://Magnus-Platform.com/app#breadcrumb"}, "dateModified": "2025-10-13", "inLanguage": "en", "keywords": ["Magnus App access", "Magnus App install", "Magnus Earning App", "Magnus-Platform.com app", "Magnus make money app"]}, {"@type": "BreadcrumbList", "@id": "https://Magnus-Platform.com/app#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://Magnus-Platform.com/"}, {"@type": "ListItem", "position": 2, "name": "App", "item": "https://Magnus-Platform.com/app"}]}, {"@type": "FAQPage", "@id": "https://Magnus-Platform.com/app#faq", "mainEntity": [{"@type": "Question", "name": "How do I access the Magnus App?", "acceptedAnswer": {"@type": "Answer", "text": "Go to https://Magnus-Platform.com/app from your device or use the link in your dashboard. Register first so the app links to your account."}}, {"@type": "Question", "name": "Do I need to register before using the app?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Visit https://Magnus-Platform.com/register, complete the form, choose an Entry Plan, make the one-time payment, then return to the app."}}, {"@type": "Question", "name": "Which devices are supported?", "acceptedAnswer": {"@type": "Answer", "text": "The Magnus App supports Android, iOS, and Web access. Features may vary by device and region."}}]}]}</script></head>
+<body>
+<div aria-label="Color theme" class="theme-switcher" role="group">
+<button aria-controls="theme-menu" aria-expanded="false" aria-label="Choose color theme" class="theme-toggle" title="Theme">🎨</button>
+<div class="theme-menu" hidden="" id="theme-menu">
+<button aria-label="WhatsApp theme" class="swatch swatch-whatsapp" data-theme="whatsapp" title="WhatsApp Dark"></button>
+<button aria-label="Messenger theme" class="swatch swatch-messenger" data-theme="messenger" title="Messenger"></button>
+<button aria-label="Original theme" class="swatch swatch-original" data-theme="original" title="Original"></button>
+</div>
+</div>
+<header>
+<div class="bar">
+<img alt="Magnus Platform logo" class="logo" loading="lazy" src="MagnusLogo.png"/>
+<div class="title">Magnus Platform <span aria-label="Verified" class="v-badge" title="Verified">✓</span></div>
+<div class="sub">Instant welcome &amp; quick start</div>
+</div>
+</header>
+<main class="wrap">
+<section aria-label="Magnus Platform chat" aria-live="polite" class="chat" id="chat"></section>
+</main>
+<footer aria-label="Message composer" class="dock" role="contentinfo">
+<div class="dock-inner">
+<form autocomplete="off" class="field" id="composer">
+<button aria-label="Upload image" class="btn secondary" id="uploadBtn" style="padding:8px 10px;min-width:auto;" type="button">
+<svg aria-hidden="true" fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M5 20h14a2 2 0 0 0 2-2v-7h-2v7H5V6h7V4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path><path d="M19 3h-4.586a2 2 0 0 0-1.414.586l-9.414 9.414A2 2 0 0 0 3 14.828V19h4.172a2 2 0 0 0 1.414-.586l9.414-9.414A2 2 0 0 0 19 7.586V3zM8.414 17H5v-3.414L14 4.586V8h3.414L8.414 17z"></path></svg>
+</button>
+<input accept="image/*" id="uploadImage" style="display:none" type="file"/>
+<input aria-label="Type your message" class="input" id="msg" name="message" placeholder="Type here and press send…" required=""/>
+<button aria-label="Send" class="send" type="submit">Send</button>
+</form>
+</div>
+</footer>
+<script>
+    const chat = document.getElementById('chat');
+    const form = document.getElementById('composer');
+    const input = document.getElementById('msg');
+    /* === Guard: block composer until Quick Start Form is submitted === */
+    let __formSubmittedOK = false;
+    (function __enforceFormBeforeChat(){
+      try{
+        const sendBtn = document.querySelector('.send');
+        // Initially lock the composer
+        if (!__formSubmittedOK){
+          input.disabled = true;
+          input.setAttribute('aria-disabled','true');
+          input.style.opacity = 0.6;
+          if (sendBtn){ sendBtn.disabled = true; sendBtn.style.opacity = 0.6; }
+        }
+        // Show prompt whenever user tries to use the input before submitting the form
+        function __blockIfNotSubmitted(ev){
+          if (!__formSubmittedOK){
+            ev.preventDefault && ev.preventDefault();
+            ev.stopImmediatePropagation && ev.stopImmediatePropagation();
+            alert('Please fill the Quick Start Form and submit first.');
+            input.blur && input.blur();
+            return false;
+          }
+        }
+        ['focus','keydown','input','paste','click'].forEach(evt => input.addEventListener(evt, __blockIfNotSubmitted, true));
+        // Intercept composer submit before other handlers
+        form.addEventListener('submit', function(e){
+          if (!__formSubmittedOK){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            alert('Please fill the Quick Start Form and submit first.');
+            return false;
+          }
+        }, true);
+        // Expose an unlock hook to be called after successful form submission
+        window.__unlockChatAfterForm = function(){
+          __formSubmittedOK = true;
+          input.disabled = false;
+          input.setAttribute('aria-disabled','false');
+          input.style.opacity = 1;
+          if (sendBtn){ sendBtn.disabled = false; sendBtn.style.opacity = 1; }
+        };
+      }catch(e){}
+    })();
+
+
+    /* lock composer while typing */
+    function __composerLock(on){
+      try{
+        input.disabled = !!on;
+        input.setAttribute('aria-disabled', on ? 'true' : 'false');
+        input.style.opacity = on ? 0.6 : 1;
+        const sendBtn = document.querySelector('.send');
+        if (sendBtn){ sendBtn.disabled = !!on; sendBtn.style.opacity = on ? 0.6 : 1; }
+      }catch(e){}
+    }
+
+    /* === IP-based persistence (added) === */
+    let __magnusIP = null;
+    let __magnusRestored = false;
+    const __NS = 'magnus_chat';
+
+    function __key(suffix=''){
+      const ip = __magnusIP || 'unknown';
+      return `${__NS}_${ip}${suffix ? '_' + suffix : ''}`;
+    }
+
+    async function __getIP(){
+      try{
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        __magnusIP = (data && data.ip) ? data.ip : 'unknown';
+      }catch(e){
+        __magnusIP = 'unknown';
+      }
+      return __magnusIP;
+    }
+
+    
+let __lastSaveTS = 0;
+function __throttleSave(fn){
+  const now = Date.now();
+  if (now - __lastSaveTS < 1500) return false;
+  __lastSaveTS = now;
+  try{ fn(); }catch(e){};
+  return true;
+}
+
+function __saveChat(){
+      if (!__magnusIP) return;
+      __throttleSave(() => {
+        try{
+          const htmlStr = chat.innerHTML;
+          if (htmlStr && htmlStr.length > 200000){
+            localStorage.setItem(__key(), htmlStr.slice(-200000));
+          }else{
+            localStorage.setItem(__key(), htmlStr || '');
+          }
+        }catch(e){}
+      });
+    }
+    function __saveFlags(){
+      if (!__magnusIP) return;
+      __throttleSave(() => {
+        try{
+          localStorage.setItem(__key('flags'), JSON.stringify({
+            howItWorksShown: !!window.howItWorksShown,
+            paymentDetailsShown: !!window.paymentDetailsShown,
+            proofCTAShown: !!window.proofCTAShown,
+            expectingCountry: !!window.expectingCountry
+          }));
+        }catch(e){}
+      });
+    }
+    function __restoreChat(){
+      if (!__magnusIP) return;
+      try{
+        const html = localStorage.getItem(__key());
+        const flags = JSON.parse(localStorage.getItem(__key('flags')) || '{}');
+        if (html){
+          chat.innerHTML = html;
+          window.howItWorksShown = flags.howItWorksShown === true || chat.innerHTML.includes("Here’s how <strong>Magnus Platform</strong> works");
+          window.paymentDetailsShown = flags.paymentDetailsShown === true || chat.innerHTML.includes('Payment Details —');
+          window.proofCTAShown = flags.proofCTAShown === true || chat.innerHTML.toLowerCase().includes('submit proof of payment to get access and start earning');
+          window.expectingCountry = flags.expectingCountry === true ? true : false;
+          __magnusRestored = true;
+        }
+      }catch(e){}
+    }
+    let __moDebounce;
+const __mo = new MutationObserver(() => { clearTimeout(__moDebounce); __moDebounce = setTimeout(() => { try{ __saveChat(); __saveFlags(); }catch(e){} }, 300); });
+    /* === Countdown floater (added) === */
+    function __ensureFloater(){
+      if (document.querySelector('.mpc-floater')) return document.querySelector('.mpc-floater');
+      const wrap = document.createElement('div');
+      wrap.className = 'mpc-floater';
+      wrap.innerHTML = `
+        <div class="mpc-head">
+          <img loading="lazy" class="mpc-pfp" src="MagnusLogo.png" alt="Magnus CEO" />
+          <div>Magnus CEO</div>
+          <button class="mpc-min" title="Minimize" aria-label="Minimize" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 12h14v2H5z"/></svg>
+          </button>
+        </div>
+        <div class="mpc-body">
+          You will get your login details and start earning immediately you have completed your payment 
+        </div>
+        <div class="mpc-foot">
+          <span>Time left</span>
+          <span class="mpc-timer" id="mpc_timer">20:00</span>
+        </div>
+        <div class="mpc-hide">
+          <button class="mpc-hide-btn" type="button">Click here  or drag to remove this popup from covering text</button>
+        </div>
+      `;
+      document.body.appendChild(wrap);
+      return wrap;
+    }
+/* === Message notification + unread badge (added) === */
+(function(){
+  if (window.__notifHelpersInstalled) return;
+  window.__notifHelpersInstalled = true;
+  let __audioCtx = null;
+
+  // Lightweight "bobble" beep using Web Audio API (no external files).
+  function __playMsgSound(){
+    try{
+      __audioCtx = __audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const now = __audioCtx.currentTime;
+      const osc = __audioCtx.createOscillator();
+      const gain = __audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(980, now);
+      gain.gain.setValueAtTime(0.0001, now);
+      osc.connect(gain); gain.connect(__audioCtx.destination);
+      gain.gain.exponentialRampToValueAtTime(0.12, now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      osc.start(now);
+      osc.stop(now + 0.14);
+    }catch(e){ /* ignore */ }
+  }
+  window.__playMsgSound = __playMsgSound;
+
+  // Unread badge
+  function __ensureUnreadBadge(){
+    let b = document.querySelector('.unread-badge');
+    if (b) return b;
+
+    // Styles (isolated, minimal)
+    if (!document.getElementById('unreadBadgeStyles')){
+      const st = document.createElement('style');
+      st.id = 'unreadBadgeStyles';
+      st.textContent = `
+.unread-badge{ position:fixed; right:16px; bottom:16px; width:44px; height:44px;
+  border:none; border-radius:9999px; background:var(--primary,#ff7a00); color:#fff;
+  display:none; align-items:center; justify-content:center; font-weight:700; font-family:inherit;
+  z-index:2147483647; box-shadow:0 8px 20px rgba(0,0,0,.35); cursor:pointer; }
+.unread-badge .count{ font-size:12px; line-height:1; pointer-events:none; }
+@media (max-width:480px){
+  .unread-badge{ right:12px; bottom:12px; width:40px; height:40px; }
+  .unread-badge .count{ font-size:11px; }
+}`.trim();
+      document.head.appendChild(st);
+    }
+
+    b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'unread-badge';
+    b.setAttribute('aria-label','Unread messages');
+    b.innerHTML = '<span class="count">0</span>';
+    b.addEventListener('click', function(){
+      try{
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        window.__unreadCount = 0;
+        __renderUnreadBadge();
+      }catch(e){}
+    }, {passive:true});
+    document.body.appendChild(b);
+    return b;
+  }
+  window.__ensureUnreadBadge = __ensureUnreadBadge;
+
+  function __renderUnreadBadge(){
+    const b = __ensureUnreadBadge();
+    const c = b.querySelector('.count');
+    const n = window.__unreadCount|0;
+    if (n > 0){
+      c.textContent = (n > 99 ? '99+' : String(n));
+      b.style.display = 'flex';
+    }else{
+      b.style.display = 'none';
+    }
+  }
+  window.__renderUnreadBadge = __renderUnreadBadge;
+
+  function __updateUnread(increment){
+    try{
+      if (increment){
+        window.__unreadCount = (window.__unreadCount|0) + 1;
+      }else{
+        // Clear only if at/near bottom
+        const atBottom = (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 8);
+        if (atBottom) window.__unreadCount = 0;
+      }
+      __renderUnreadBadge();
+    }catch(e){}
+  }
+  window.__updateUnread = __updateUnread;
+
+  // Reset when scrolled to the bottom or page becomes visible again
+  window.addEventListener('scroll', function(){ __updateUnread(false); }, {passive:true});
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'visible'){ __updateUnread(false); }
+  });
+})();
+
+
+    // Make floater draggable and minimizable; persist position/minimized per IP
+    function __attachFloaterControls(floater){
+      if (!floater || floater.__wired) return;
+      floater.__wired = true;
+      const head = floater.querySelector('.mpc-head');
+      const minBtn = floater.querySelector('.mpc-min');
+      const hideBtn = floater.querySelector('.mpc-hide-btn');
+
+      // Restore saved position/min state
+      try{
+        const pos = JSON.parse(localStorage.getItem(__key('floaterPos')) || 'null');
+        if (pos && typeof pos.left==='number' && typeof pos.top==='number'){
+          floater.style.left = pos.left+'px';
+          floater.style.top = pos.top+'px';
+          floater.style.right = 'auto';
+          floater.style.bottom = 'auto';
+          floater.style.transform = 'none';
+        }else{
+          // Initialize left/top from current rect
+          const r = floater.getBoundingClientRect();
+          floater.style.left = (r.left)+'px';
+          floater.style.top = (r.top)+'px';
+          floater.style.right = 'auto';
+          floater.style.bottom = 'auto';
+          floater.style.transform = 'none';
+        }
+        const min = localStorage.getItem(__key('floaterMin')) === '1';
+        if (min) floater.classList.add('min');
+      }catch(e){}
+
+      // Minimize toggle
+      if (minBtn){
+        minBtn.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          floater.classList.toggle('min');
+          try{ localStorage.setItem(__key('floaterMin'), floater.classList.contains('min') ? '1' : '0'); }catch(e){}
+        });
+      }
+
+      // Hide button
+      if (hideBtn){ hideBtn.addEventListener('click', () => { floater.remove(); try{ localStorage.removeItem(__key('countdownEnd')); }catch(e){} }); }
+
+      // Dragging
+      let drag = null;
+      function onDown(ev){
+        if (ev.target.closest('.mpc-min')) return; // don't start drag on min icon
+        const e = ev.touches ? ev.touches[0] : ev;
+        drag = {
+          sx: e.clientX,
+          sy: e.clientY,
+          left: parseFloat(getComputedStyle(floater).left) || 0,
+          top: parseFloat(getComputedStyle(floater).top) || 0
+        };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+        document.addEventListener('touchmove', onMove, {passive:false});
+        document.addEventListener('touchend', onUp);
+      }
+      function onMove(ev){
+        if (!drag) return;
+        const e = ev.touches ? ev.touches[0] : ev;
+        ev.preventDefault && ev.preventDefault();
+        const dx = e.clientX - drag.sx;
+        const dy = e.clientY - drag.sy;
+        let L = drag.left + dx;
+        let T = drag.top + dy;
+        // Constrain within viewport
+        const w = floater.offsetWidth, h = floater.offsetHeight;
+        const vw = window.innerWidth, vh = window.innerHeight;
+        L = Math.max(4, Math.min(vw - w - 4, L));
+        T = Math.max(4, Math.min(vh - h - 4, T));
+        floater.style.left = L + 'px';
+        floater.style.top = T + 'px';
+      }
+      function onUp(){
+        if (!drag) return;
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('touchend', onUp);
+        try{
+          localStorage.setItem(__key('floaterPos'), JSON.stringify({left: parseFloat(floater.style.left)||0, top: parseFloat(floater.style.top)||0}));
+        }catch(e){}
+        drag = null;
+      }
+      head.addEventListener('mousedown', onDown);
+      head.addEventListener('touchstart', onDown, {passive:true});
+    }
+function __startPaymentCountdown(){
+      try{
+        const endKey = __key('countdownEnd');
+        let end = localStorage.getItem(endKey);
+        const now = Date.now();
+        if (!end){
+          end = now + 20*60*1000; // 20 minutes
+          localStorage.setItem(endKey, String(end));
+        }else{
+          end = parseInt(end, 10);
+          if (isNaN(end)){ end = now + 20*60*1000; localStorage.setItem(endKey, String(end)); }
+        }
+
+        const floater = __ensureFloater(); __attachFloaterControls(floater);
+        const timerEl = floater.querySelector('#mpc_timer');
+        function tick(){
+          const remain = Math.max(0, end - Date.now());
+          const s = Math.floor(remain/1000);
+          const mm = Math.floor(s/60).toString().padStart(2,'0');
+          const ss = (s%60).toString().padStart(2,'0');
+          if (timerEl) timerEl.textContent = `${mm}:${ss}`;
+          if (remain <= 0){ clearInterval(iv); }
+        }
+        tick();
+        const iv = setInterval(tick, 1000);
+      }catch(e){ /* ignore */ }
+    }
+
+    __mo.observe(chat, { childList:true, subtree:true });
+
+    function appendMessage(role, html) {
+      const row = document.createElement('div');
+      row.className = 'row ' + (role === 'user' ? 'user-row' : 'bot-row') + ' fade-in';
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      if (role === 'user') avatar.style.display = 'none';
+      else avatar.innerHTML = '<img loading="lazy" src=\"MagnusLogo.png\" alt=\"Magnus profile\" />';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + (role === 'user' ? 'user' : 'bot');
+      bubble.innerHTML = html;
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+      chat.appendChild(row);
+      // Stop autoscroll permanently after the "Nice to meet you" message appears,
+// but force-scroll when a country prompt or payment details are shown.
+try{
+  const isCountryPrompt =
+    /data-action\s*=\s*["']select-?country["']/i.test(html) ||
+    /name of country|select your country|choose (your )?country|which country/i.test(html);
+
+  const isPaymentReveal =
+    /data-action\s*=\s*["'](reveal-?payment|show-?payment|payment-?details)["']/i.test(html) ||
+    /payment details|account details|bank (name|account|details)|transfer|NGN|USD|send receipt|receipt/i.test(html);
+
+  const forceScroll = isCountryPrompt || isPaymentReveal;
+
+  if (!window.__noAutoScrollAfterGreeting || forceScroll) {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+  if (role === 'bot' && /nice to meet you/i.test(html)) {
+    window.__noAutoScrollAfterGreeting = true;
+  }
+}catch(e){}try{ __saveChat(); __saveFlags(); }catch(e){}
+      
+try{ __playMsgSound && __playMsgSound(); }catch(e){}
+try{
+  const __atBottom = (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 8);
+  // Count only bot messages that are not auto-viewed
+  const __shouldCount = (role === 'bot') && !__atBottom;
+  __updateUnread && __updateUnread(__shouldCount);
+}catch(e){}return bubble;
+    }
+
+    function buildCard(headText, bodyHTML, withActions){
+      return `<div class="card" role="region" aria-label="${headText}">
+        <div class="head">${headText}</div>
+        <div class="body">${bodyHTML}</div>
+        ${withActions ? `<div class="actions">
+            <button class="btn primary" data-action="choose">Explain More</button>
+            <button class="btn secondary" data-action="choose-business">I am ready</button>
+          </div>` : ``}
+      </div>`;
+    }
+
+    const PROOF_TEXTS = {
+  1: `<div class="proof-copy" style="margin-top:10px;color:var(--text)">We&#x27;ve made a seamless onboarding process available. <br><br>The onboarding process will be fast and stressfree, with our PayFacs waiting to receive your details and instantly authenticate your account.<br><br>If you want to become one of our PayFacs, start getting prepared for it. If you don&#x27;t generate more than ₦500,000 daily from this position, then it&#x27;s not <strong>MAGNUS!</strong></div>`,
+  2: `<div class="proof-copy" style="margin-top:10px;color:var(--text)">.<br>                                🛍️<br>              ⚡ <strong>M  A  G  N  U  S?</strong><br>____________________________________<br><br><strong>MAGNUS</strong> is a sophisticated e-learning hub that empowers you to acquire relevant, high-end skills, offers training programs, provides opportunities for skill application, and grants you access to affordable yet effective digital products at discounted rates. It also offers you the opportunity to either use these products for personal growth or resell them to generate profits.</div>`,
+  3: `<div class="proof-copy" style="margin-top:10px;color:var(--text)">Magnus is a trusted place to be! With full authorisation to operate.<br><br>☀️We are 1SO 27001 Certified. <br><br>☀️We are 1SO 22301 Certified. <br><br>☀️NG. Govt. Approved!</div>`,
+  4: `<div class="proof-copy" style="margin-top:10px;color:var(--text)"><strong>MAGNUS</strong> marketplace offers wide range of digital products ranging from;<br><br>⭐Trading tools<br>⭐Signals <br>⭐Analytics<br>⭐Courses</div>`,
+  5: `<div class="proof-copy" style="margin-top:10px;color:var(--text)"><strong>What Magnus has in store for you as a user!</strong><br><br>▫️Hot, In-demand skills <br><br>▫️Unlimited access to digital products<br><br>▫️Job offers from top international companies upon skill acquisition<br><br>▫️Global rewards and recognition <br><br>▫️Expert guidance from experienced coaches and instructors<br><br>▫️Unlimited earning potential to achieve your financial goals<br><br>▫️Earning over ₦30,000 daily is assured!</div>`,
+  6: `<div class="proof-copy" style="margin-top:10px;color:var(--text)"><strong>If you choose to learn a skill, what do you stand to gain?</strong> <br><br>Magnus offers skills with lucrative job offers upon skill acquisition. Expert coaches and instructors will be on standby to guide you through the entire learning and earning process. <br><br>Upon skill acquisition, you&#x27;ll receive a global certification for international recognition, along with a standby job offer that includes a ₦5,000 hourly payment plan!<br><br>Just learn while MAGNUS connect you with your dream!</div>`,
+  7: `<div class="proof-copy" style="margin-top:10px;color:var(--text)"><strong>If you don&#x27;t have time to learn a skill?</strong><br><br>You can become a digital reseller on Magnus and earn a profit of ₦5,000 per sale. <br><br>Here&#x27;s how the reselling process works:<br><br>1. You purchase digital products at a discounted rate.<br>2. You set your own resale price.<br>3. The company handles logistics, and the initial entry fee (registration fee) covers all associated costs.<br><br>Once the product is sold, you&#x27;ll receive your profit, and you can use the initial funding amount to purchase another digital product, and continue the process till you attain financial freedom.</div>`,
+  8: `<div class="proof-copy" style="margin-top:10px;color:var(--text)"><strong>How You earn in different ways on magnus without referrals!</strong><br><br>⚡Resell courses/products <br>______________________<br>⚡Learn skill &amp; Apply <br>___________________<br>⚡Copy and paste <br>_______________<br><br>[]- ₦5,000 /sale<br>________________<br>[]- ₦5,000 per hour<br>______________________<br>[]- ₦1,400 within minutes<br>____________________________<br><br>⭐ The amazing thing is that you can choose to acquire these products for personal use or resell them to make profits. If you don&#x27;t have time to learn, I can set up your account and configure it for resale purposes, which will enable you to start making massive profits. You won&#x27;t be the one selling; the company handles the sales on your behalf.</div>`,
+  9: `<div class="proof-copy" style="margin-top:10px;color:var(--text)"><strong>MAGNUS</strong> has 3 entry plans:<br><br>👑 <strong>Magnus Business</strong><br>✨ <strong>Magnus Pro</strong><br>💫 <strong>Magnus Lite</strong><br><br>⭐The package you choose will determine your income potential.</div>`,
+  10: `<div class="proof-copy" style="margin-top:10px;color:var(--text)">If you choose to promote Magnus, here are the benefits we have in store for you!<br><br>👇🏼</div>`,
+  11: `<div class="proof-copy" style="margin-top:10px;color:var(--text)"><strong>SALES ACHIEVEMENTS</strong>: This a special offer given to MAGNUS&#x27;S users after completing specific sale challenge. Each of them has a name thus;<br><br>SALES Achievements<br><strong>Solid Foundation</strong>: Make 3 sales on your first day of registration and earn ₦5,800.<br><br><strong>7 Days Wonder</strong>: Achieve 16 sales within your first week of registration and earn ₦34,200.<br><br><strong>Bulk Master</strong>: Make 45 sales in your first month of registration and earn ₦105,500.<br><br><strong>Focused Leader</strong>: Attain 200 sales and earn ₦210,500.<br><br><strong>Community Builder</strong>: Recruit 7 promoters to your team and earn ₦350,000.<br><br><strong>Sales Momentum</strong>: Achieve 500 sales within 2 months of registration and earn ₦650,000.<br><br><strong>Unstoppable</strong>: Make a minimum of 175 sales per month for 3 consecutive months and earn ₦1,250,000.<br><br><strong>Total Dedication</strong>: Attain 1,000 sales and earn ₦2,000,000.<br><br><strong>Maximum Impact</strong>: Attain 3,500 sales and earn ₦5,750,000.<br><br><strong>Sales Champion</strong>: Complete 100% of sales achievements and earn ₦10,000,000 plus an all expenses paid trip to Rwanda.</div>`,
+  12: `<div class="proof-copy" style="margin-top:10px;color:var(--text)">If you&#x27;re privileged to have promoters in your network, each earns you ₦7,500 per day, NON-STOP! <br><br>However, if you have a very active promoter committed to growing the system, we&#x27;ll evaluate their performance and offer you even more.<br><br>You can earn over ₦50,000 per day from just one promoter if the person is truly committed. And if you have multiple promoters under you, the earnings potential increases.<br><br>       <strong>UPLINE    PROMOTER</strong><br><br>                     👑 <br><br>👤                👤               👤          <br> |  |                  |  |                 |  |<br>/   \                /  \                /  \<br>₦7,500       ₦7,500       ₦ 7,500<br>_______________________________<br>TOTAL = ₦22,500 everyday <br>_______________________________</div>`,
+  13: `<div class="proof-copy" style="margin-top:10px;color:var(--text)"><strong>MAGNUS&#x27;S COMPENSATION PLAN/SALES COMMISSIONS</strong><br><br>For <strong>Magnus business</strong><br>▫️Direct commission is ₦17,100<br>▫️Indirect is ₦1,300<br><br>For <strong>Magnus Pro,</strong> <br>▫️Direct commission is ₦11,500<br>▫️Indirect is ₦650<br><br>For <strong>Magnus lite,</strong><br>▫️ Direct commission is ₦7,500<br>▫️Indirect is 350</div>`,
+  14: `<div class="proof-copy" style="margin-top:10px;color:var(--text)"><strong>What makes Magnus unique?</strong><br><br>⭐Magnus offers sustainable means of livelihood with multiple income funnels. <br><br>⭐It gives more value for your money. <br><br>⭐It&#x27;s not a Ponzi scheme. Magnus focuses on real digital skills and products. <br><br>⭐You are not the one selling, the company handles the selling of digital products on your behalf. <br><br>⭐Just one time payment. It doesn&#x27;t require additional funding; your entry fee covers all associated costs, including unlimited free digital products. <br><br>⭐You don&#x27;t need to refer anyone before making money. There are many ways to earn without stress. <br><br>⭐Your entry fee is refundable. You can indicate interest in reselling the product to the next available prospective buyer, and the company honors the request. <br><br>⭐All digital products are available at discounted rates. <br><br>⭐You gain full employment upon skill acquisition. <br><br>⭐Magnus offers digital skills that you can learn in minutes, and you&#x27;ll start making money for life!</div>`,
+  15: `<div class="proof-copy" style="margin-top:10px;color:var(--text)">&gt; Unique facts about Magnus:<br><br>▫️Magnus offers thousands of digital products that users can access anytime. <br><br>▫️Some digital products can be used immediately, while others require intense study time before use. <br><br>▫️Certain skills can be acquired within minutes, while others take months to learn. As a user, you&#x27;re free to choose what works for you.<br><br>▫️If you have the time, you can learn multiple skills to increase your income. <br><br>▫️The more skills you learn, the higher you earn. And, the more time you spend working, the more you earn. <br><br>▫️You can also become a digital retailer and earn millions monthly.<br><br>▫️You can receive your money via PayPal, USDT, or a local bank account. <br><br>▫️Your entry fee can be recovered within 5 days of joining, making it 100% refundable.</div>`,
+  16: `<div class="proof-copy" style="margin-top:10px;color:var(--text)">___________________________________<br>&gt; Earnings for Magnus employees<br>___________________________________<br><br>★ With Magnus, you&#x27;ll;<br><br>① Gain Valuable Skills <br>② Get Trained <br>③ Get Employed <br>④ And Start Making Money<br><br>⇒For every 30 minutes of work, you&#x27;ll earn ₦2,499.<br><br>🕐1 hour   =₦4,999.8 <br><br>🕑2hours  =₦9,999.6<br><br>🕒3hours  =₦14,999.4<br><br>⭐ <strong>If you work 6 hours daily, you&#x27;ll earn ₦29,998.8 daily, ₦209,991.6 weekly, and ₦899,964 in 30 days.</strong><br>___________________________________<br><br>If you learn two skills and multitask to double your income! Here&#x27;s your potential earnings:<br><br>- 1 day:        ₦59,997.6<br>- 2 days:      ₦119,995.2<br>- 3 days:      ₦179,992.8<br>- 4 days:      ₦239,990.4<br><br>⚡You can also become a digital retailer and earn millions monthly without referrals!</div>`,
+  17: `<div class="proof-copy" style="margin-top:10px;color:var(--text)">This dashboard shows your working hours (36), which tally with your work payments. <br><br>The first skill shown; _in use.._ indicates that you&#x27;ve learned the skill and instantly employed to work. The progress bar displays the revenue you&#x27;ve generated within minutes. There&#x27;s also an indication of potential hourly payments.<br><br>For the second skill with ₦5,000 hourly payment plan offer, it means you can still choose and learn the skill for dual employment. <br><br>However, if you can&#x27;t do it, you&#x27;re free to resell and keep making money. You can learn multiple skills and earn multiple incomes.<br><br>Simple and straight forward. Have a good night rest future billionaires.</div>`
+};
+const PROOF_TITLES = {
+  1: `Magnus Platform — We've made a seamless onboarding process available. | Register - Earn online - Sell digital products | Nigeria | Fast withdrawals | No referra`,
+  2: `Magnus Platform — . | Buy digital products - Make money online - Legit platform | Nigeria | Fast withdrawals | No referrals needed | Join today | Start now | Si`,
+  3: `Magnus Platform — Magnus is a trusted place to be! With full authorisation to  | Work from home - Start a business with small capital - Earn online | Nigeria | `,
+  4: `Magnus Platform — *MAGNUS* marketplace offers wide range of digital products r | Register - Make money online - Work from home | Nigeria | Fast withdrawals | No`,
+  5: `Magnus Platform — *What Magnus has in store for you as a user!* | Sell digital products - Buy digital products - Start a business with small capital | Nigeria |`,
+  6: `Magnus Platform — *If you choose to learn a skill, what do you stand to gain?* | Legit platform - Earn online - Register | Nigeria | Fast withdrawals | No refer`,
+  7: `Magnus Platform — *If you don't have time to learn a skill?* | Work from home - Make money online - Buy digital products | Nigeria | Fast withdrawals | No refer`,
+  8: `Magnus Platform — *How You earn in different ways on magnus without referrals! | Start a business with small capital - Sell digital products - Legit platform | `,
+  9: `Magnus Platform — *MAGNUS* has 3 entry plans: | Earn online - Register - Buy digital products | Nigeria | Fast withdrawals | No referrals needed | Join today | `,
+  10: `Magnus Platform — If you choose to promote Magnus, here are the benefits we ha | Make money online - Sell digital products - Work from home | Nigeria | Fast wit`,
+  11: `Magnus Platform — *SALES ACHIEVEMENTS*: This a special offer given to MAGNUS'S | Legit platform - Start a business with small capital - Earn online | Nigeria | `,
+  12: `Magnus Platform — If you're privileged to have promoters in your network, each | Register - Buy digital products - Make money online | Nigeria | Fast withdrawal`,
+  13: `Magnus Platform — *MAGNUS'S COMPENSATION PLAN/SALES COMMISSIONS* | Sell digital products - Work from home - Register | Nigeria | Fast withdrawals | No referrals`,
+  14: `Magnus Platform — *What makes Magnus unique?* | Earn online - Make money online - Legit platform | Nigeria | Fast withdrawals | No referrals needed | Join today`,
+  15: `Magnus Platform — > Unique facts about Magnus: | Buy digital products - Start a business with small capital - Work from home | Nigeria | Fast withdrawals | No r`,
+  16: `Magnus Platform — ___________________________________ | Register - Legit platform - Sell digital products | Nigeria | Fast withdrawals | No referrals needed | J`,
+  17: `Magnus Platform — This dashboard shows your working hours (36), which tally wi | Work from home - Earn online - Make money online | Nigeria | Fast withdrawals |`
+};
+
+const ASK_CONTACTS = ["09160014944","09162975627","08143855382","08123162709","08157823869"];
+function getRandomContact(){
+  return ASK_CONTACTS[Math.floor(Math.random()*ASK_CONTACTS.length)];
+}
+
+function proofCardHTML(i){
+      return `<div class="card" role="region" aria-label="Proof ${i}">
+        <div class="head">Verification & Proof #${i}</div>
+        <div class="body">
+          <figure style="margin:0">
+            <img loading="lazy" src="P${i}.png" alt="Magnus proof ${i}" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--border)" />
+            <figcaption style="margin-top:8px">
+              <details class="seo-topic-toggle" style="margin:6px 0 0 0;"><summary style="cursor:pointer;outline:none">See topic</summary><h1 style="margin:0 0 4px 0;font-size:1.05rem;line-height:1.2">${PROOF_TITLES[i] || `Magnus Success Proof`}</h1></details></figcaption>
+              ${PROOF_TEXTS[i] || ``}
+
+          </figure>
+        </div>
+        <div class="actions">
+          <button class="btn primary" data-action="choose">Explain More</button>
+          <button class="btn secondary" data-action="ready">Ask Questions</button>
+          <button class="btn primary" data-action="choose-business">register with a good coach</button>
+        </div>
+      </div>`;
+    }
+
+    function escapeHTML(str){
+      return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    }
+
+    function greet() {
+      if (window.__magnusRestored) { input.focus(); return; }
+      appendMessage('bot', `Welcome to Magnus Platform where Users earn not less than 10k daily. Please fill the form with your real name, Your active WhatsApp number or Just Phone Number and Chose your gender.`);
+      appendMessage('bot', buildCard('Quick Start Form', `
+        <form id="quickRegForm" novalidate style="display:grid; gap:6px;">
+          <div style="display:grid; gap:4px;">
+            <label for="qr_name" style="font-weight:700;">Fullname</label>
+            <input id="qr_name" name="name" type="text" placeholder="Mr John" required
+              style="width:100%; padding:6px 10px; background: var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--text);" />
+          </div>
+          <div style="display:grid; gap:4px;">
+            <label for="qr_phone" style="font-weight:700;">Phone number</label>
+            <input id="qr_phone" name="phone" type="tel" inputmode="tel" placeholder="0803 123 4567" required
+              style="width:100%; padding:6px 10px; background: var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--text);" />
+          </div>
+          <div style="display:grid; gap:4px;">
+  <label for="qr_gender" style="font-weight:700;">Gender</label>
+  <select id="qr_gender" name="gender"
+    style="width:100%; padding:6px 10px; background: var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--text);">
+    <option value="" selected disabled>Choose gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+  </select>
+</div>
+          <div style="margin-top:4px;">
+            <button id="qr_btn" type="submit" class="btn primary" style="width:100%; padding:8px 10px;">Submit</button>
+          </div>
+          <div id="qr_ok" style="display:none;margin-top:6px;padding:8px;border-radius:10px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);">✅ Thanks! Your details were received.</div>
+          <div id="qr_err" style="display:none;margin-top:6px;padding:8px;border-radius:10px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);">⚠️ Couldn’t submit. Please try again.</div>
+          <p class="small" style="font-size:.85rem;opacity:.8;margin:4px 0 0;">Note: Fill the form and your Magnus Login details will be ready — no stress.</p>
+        </form>
+      `, false));
+      input.focus();
+    }
+
+    function containsAny(str, arr){
+      const L = str.toLowerCase();
+      return arr.some(w => L.includes(w.toLowerCase()));
+    }
+
+    function typingThenGlobal(cb){
+      __composerLock(true);
+      const t = appendMessage('bot', `<em>Magnus Platform is typing<span class="dots">.....</span></em>`);
+      const d = t.querySelector('.dots');
+      let c = 1;
+      const tm = setInterval(()=>{ c=(c%5)+1; d.textContent='.'.repeat(c); }, 500);
+      setTimeout(()=>{
+        clearInterval(tm);
+        t.parentElement.remove();
+        __composerLock(false);
+        cb && cb();
+      }, 6000);
+    }
+function typingThenProof(cb){
+  __composerLock(true);
+  const t = appendMessage('bot', `<em>Magnus Platform is typing<span class="dots">.....</span></em>`);
+  const d = t.querySelector('.dots');
+  let c = 1;
+  const tm = setInterval(()=>{ c=(c%5)+1; d.textContent='.'.repeat(c); }, 500);
+  setTimeout(()=>{
+    clearInterval(tm);
+    try{ t.parentElement && t.parentElement.remove(); }catch(e){}
+    __composerLock(false);
+    cb && cb();
+  }, 10000);
+}
+
+
+    function showProofSequence(){
+      let i = 1;
+      const next = () => {
+        if (i > 17) return;
+        typingThenProof(()=>{
+          appendMessage('bot', proofCardHTML(i));
+          i++;
+          next();
+        });
+      };
+      next();
+    }
+
+    const countryPrompt = `Reply with the name of your country only so that you can proceed with registration.
+
+Countries available:
+1. Liberia 🇱🇷
+2. Kenya 🇰🇪
+3. Ghana 🇬🇭
+4. Cameroon 🇨🇲
+5. Uganda 🇺🇬 | Tanzania 🇹🇿
+6. South Africa 🇿🇦 | Nigeria 🇳🇬
+7. Sierra Leone 🇸🇱
+8. Ivory Coast 🇨🇮 | Togo 🇹🇬 | Benin 🇧🇯 | Mali 🇲🇱 | Burkina Faso 🇧🇫 | Guinea-Bissau 🇬🇼 | Senegal 🇸🇳 | Niger 🇳🇪
+9. The Gambia 🇬🇲
+10. Zimbabwe 🇿🇼
+
+Which country are you from? Reply with the name only.`;
+
+    let expectingCountry = false;
+    let paymentDetailsShown = false;
+    let proofCTAShown = false;
+
+    const countryAccounts = {
+      nigeria: { label: 'Nigeria', bank: 'UBA', number: '2190444589', name: 'Ubong Peter Isonguyo' },
+      southafrica: { label: 'South Africa', bank: 'Standard Bank (Demo)', number: '000123456789', name: 'Magnus Platform Demo' },
+      kenya: { label: 'Kenya', bank: 'KCB (Demo)', number: '1102345678', name: 'Magnus Platform Demo' },
+      ghana: { label: 'Ghana', bank: 'GCB Bank (Demo)', number: '0234567890', name: 'Magnus Platform Demo' },
+      uganda: { label: 'Uganda', bank: 'Stanbic Uganda (Demo)', number: '3102345678', name: 'Magnus Platform Demo' },
+      tanzania: { label: 'Tanzania', bank: 'CRDB (Demo)', number: '4102345678', name: 'Magnus Platform Demo' },
+      liberia: { label: 'Liberia', bank: 'Ecobank Liberia (Demo)', number: '1002345678', name: 'Magnus Platform Demo' },
+      cameroon: { label: 'Cameroon', bank: 'UBA Cameroon (Demo)', number: '2002345678', name: 'Magnus Platform Demo' },
+      sierraleone: { label: 'Sierra Leone', bank: 'Sierra Leone Commercial Bank (Demo)', number: '5202345678', name: 'Magnus Platform Demo' },
+      ivorycoast: { label: 'Ivory Coast', bank: 'Ecobank Côte d’Ivoire (Demo)', number: '5302345678', name: 'Magnus Platform Demo' },
+      cotedivoire: { label: 'Côte d’Ivoire', bank: 'Ecobank Côte d’Ivoire (Demo)', number: '5302345678', name: 'Magnus Platform Demo' },
+      togo: { label: 'Togo', bank: 'Ecobank Togo (Demo)', number: '5402345678', name: 'Magnus Platform Demo' },
+      benin: { label: 'Benin', bank: 'Bank of Africa Benin (Demo)', number: '5502345678', name: 'Magnus Platform Demo' },
+      mali: { label: 'Mali', bank: 'BNDA (Demo)', number: '5602345678', name: 'Magnus Platform Demo' },
+      burkinafaso: { label: 'Burkina Faso', bank: 'Coris Bank (Demo)', number: '5702345678', name: 'Magnus Platform Demo' },
+      guineabissau: { label: 'Guinea-Bissau', bank: 'BAO Guinea-Bissau (Demo)', number: '5802345678', name: 'Magnus Platform Demo' },
+      senegal: { label: 'Senegal', bank: 'Ecobank Senegal (Demo)', number: '5902345678', name: 'Magnus Platform Demo' },
+      niger: { label: 'Niger', bank: 'Bank of Africa Niger (Demo)', number: '6002345678', name: 'Magnus Platform Demo' },
+      gambia: { label: 'The Gambia', bank: 'Trust Bank Gambia (Demo)', number: '6102345678', name: 'Magnus Platform Demo' },
+      thegambia: { label: 'The Gambia', bank: 'Trust Bank Gambia (Demo)', number: '6102345678', name: 'Magnus Platform Demo' },
+      zimbabwe: { label: 'Zimbabwe', bank: 'CBZ Bank (Demo)', number: '6202345678', name: 'Magnus Platform Demo' }
+    };
+
+    function canonicalizeCountry(str){
+      return str
+        .toLowerCase()
+        .normalize('NFD').replace(/\p{Diacritic}/gu,'')
+        .replace(/[^a-z]/g,''); // letters only
+    }
+
+    function findCountryAccount(input){
+      const c = canonicalizeCountry(input);
+      for (const key in countryAccounts){
+        if (c === key || c.includes(key) || key.includes(c)){
+          return countryAccounts[key];
+        }
+      }
+      return null;
+    }
+
+    /* CTA card for proof submission */
+    
+function __buildPrefilledPaymentText(formEl){
+  const name   = (window.__fullName || window.__firstName || '').toString().trim();
+  const phone  = (window.__phone || '').toString().trim();
+  const gender = (formEl && formEl.querySelector && (formEl.querySelector('#qr_gender') || {}).value || window.__gender || '').toString().trim();
+  const plan   = (window.__selectedPlan && window.__selectedPlan.label) ? window.__selectedPlan.label : '';
+  const email  = (window.__gmail || window.__email || '').toString().trim();
+
+  const safe = (v, fallback='not provided') => (v && v.length ? v : fallback);
+
+  const lines = [];
+  lines.push('--- Magnus Platform Registration Details ---');
+  lines.push('Fullname: ' + safe(name));
+  lines.push('Phone number: ' + safe(phone));
+  lines.push('Gender: ' + safe(gender));
+  lines.push('Selected Entry Plan: ' + safe(plan));
+  lines.push('Email: ' + safe(email));
+  lines.push('');
+  lines.push('👉 If Email shows "not provided", please type your email above now and manually upload your payment screenshot or receipt in this chat to speed up activation.');
+  return lines.join('\n');
+}
+function submitProofCTAHTML(){
+      return `<div class="card" role="region" aria-label="Submit proof">
+        <div class="actions">
+          <button class="btn primary" data-action="submit-proof" role="button" tabindex="0">submit proof of payment to get access and start earning</button>
+        </div>
+      </div>`;
+    }
+
+    
+/* === Entry Plan Fees (NGN) and FX helpers (added) === */
+window.__PLAN_FEES_NGN = { lite: 11000, pro: 17500, business: 28500 };
+window.__selectedPlan = window.__selectedPlan || null; // { key: 'lite'|'pro'|'business', fee: number, label: string }
+
+// Country -> currency code & symbol (minimal map for listed countries)
+const __CURRENCY_BY_COUNTRY = {
+  'Nigeria': { code: 'NGN', symbol: '₦' },
+  'South Africa': { code: 'ZAR', symbol: 'R' },
+  'Kenya': { code: 'KES', symbol: 'KSh' },
+  'Ghana': { code: 'GHS', symbol: '₵' },
+  'Uganda': { code: 'UGX', symbol: 'USh' },
+  'Tanzania': { code: 'TZS', symbol: 'TSh' },
+  'Liberia': { code: 'LRD', symbol: 'L$' },
+  'Cameroon': { code: 'XAF', symbol: 'FCFA' },
+  'Sierra Leone': { code: 'SLL', symbol: 'Le' },
+  'Ivory Coast': { code: 'XOF', symbol: 'CFA' },
+  'Côte d’Ivoire': { code: 'XOF', symbol: 'CFA' },
+  'Togo': { code: 'XOF', symbol: 'CFA' },
+  'Benin': { code: 'XOF', symbol: 'CFA' },
+  'Mali': { code: 'XOF', symbol: 'CFA' },
+  'Burkina Faso': { code: 'XOF', symbol: 'CFA' },
+  'Guinea-Bissau': { code: 'XOF', symbol: 'CFA' },
+  'Senegal': { code: 'XOF', symbol: 'CFA' },
+  'Niger': { code: 'XOF', symbol: 'CFA' },
+  'The Gambia': { code: 'GMD', symbol: 'D' },
+  'Zimbabwe': { code: 'ZWL', symbol: 'Z$' }
+};
+
+// Fetch FX rates NGN->others once and cache
+async function __ensureFxRates(){
+  if (window.__fx && window.__fx.base === 'NGN' && window.__fx.rates) return window.__fx;
+  try{
+    const res = await fetch('https://open.er-api.com/v6/latest/NGN');
+    const data = await res.json();
+    if (data && data.result === 'success'){
+      window.__fx = { base: 'NGN', rates: data.rates || {} };
+      return window.__fx;
+    }
+  }catch(e){}
+  // Fallback: minimal pseudo-rates (very approximate)
+  window.__fx = { base: 'NGN', rates: { NGN: 1, ZAR: 0.01, KES: 0.1, GHS: 0.005, UGX: 3.0, TZS: 4.0, LRD: 0.12, XAF: 0.4, XOF: 0.4, SLL: 10.0, GMD: 0.04, ZWL: 2.0 } };
+  return window.__fx;
+}
+
+function __formatMoney(n, symbol){
+  try{
+    return symbol + (Math.round(n).toLocaleString());
+  }catch(e){
+    return symbol + String(Math.round(n));
+  }
+}
+
+async function __renderLocalFees(){
+  try{
+    const fx = await __ensureFxRates();
+    document.querySelectorAll('.local-fee[data-country][data-ngn]').forEach(el => {
+      const country = el.getAttribute('data-country');
+      const ngn = parseFloat(el.getAttribute('data-ngn')) || 0;
+      const cur = __CURRENCY_BY_COUNTRY[country] || { code:'NGN', symbol:'₦' };
+      const rate = fx.rates[cur.code] || 1; // how many cur per 1 NGN
+      const localAmt = ngn * rate;
+      el.textContent = ' (~ ' + __formatMoney(localAmt, cur.symbol) + ' )';
+    });
+  }catch(e){ /* ignore */ }
+}
+
+// Observe chat to render fees whenever a new card appears
+(function(){
+  if (!window.__feesMO && window.MutationObserver){
+    let __feesDebounce;
+window.__feesMO = new MutationObserver(() => { clearTimeout(__feesDebounce); __feesDebounce = setTimeout(__renderLocalFees, 250); });
+    window.__feesMO.observe(document.getElementById('chat'), { childList:true, subtree:true });
+  }
+})();
+function bankCardHTML(acct){
+      const feeNgn = (window.__selectedPlan && window.__selectedPlan.fee) || 0;
+      const planLabel = (window.__selectedPlan && window.__selectedPlan.label) || 'Entry Plan';
+      return buildCard(`Payment Details — ${acct.label}`, `
+        <ul>
+          <li>⭐️ <strong>Plan Selected:</strong> <span class="val-plan">` + planLabel + `</span></li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+          <li>⭐️ <strong>Entry Fee:</strong> ₦` + (feeNgn ? feeNgn.toLocaleString() : '—') + ` <span class="local-fee" data-country="${acct.label}" data-ngn="` + (feeNgn||0) + `"> (~ calculating…)</span></li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+        <ul>
+          <li>⭐️ <strong>Account Name:</strong> <span class="val-name">${acct.name}</span>
+            <button class="btn secondary" data-action="copy-field" data-label="Account Name" data-value="${acct.name}" style="padding:6px 10px; margin-left:8px; font-size:.85em;">Copy</button>
+          </li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+          <li>⭐️ <strong>Bank:</strong> <span class="val-bank">${acct.bank}</span>
+            <button class="btn secondary" data-action="copy-field" data-label="Bank" data-value="${acct.bank}" style="padding:6px 10px; margin-left:8px; font-size:.85em;">Copy</button>
+          </li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+          <li>⭐️ <strong>Account Number:</strong> <code class="val-num" style="font-weight:700">${acct.number}</code>
+            <button class="btn secondary" data-action="copy-field" data-label="Account Number" data-value="${acct.number}" style="padding:6px 10px; margin-left:8px; font-size:.85em;">Copy</button>
+          </li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+          <li style="color:var(--muted)"><em>Note:</em> The Entry fee will  increase to 100k after today,Pay now and start cheaper.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+        </ul>
+        <div class="actions" style="margin-top:12px;">
+          <button class="btn primary">I have made the payment</button>
+        </div>
+      `, false);
+    }
+
+    chat.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const action = btn.dataset.action;
+      if (action === 'choose') {
+        appendMessage('user', 'Explain More');
+        showProofSequence();
+      } else if (action === 'ready') {
+        appendMessage('user', 'I am ready');
+        appendMessage('bot', countryPrompt);
+        expectingCountry = true; __saveFlags();
+      }
+    });
+
+    /* Per-field copy handler: copy only the value */
+    chat.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action="copy-field"]');
+      if (!btn) return;
+      const value = btn.dataset.value || '';
+      const text = value;
+
+      const fallbackCopy = (t) => {
+        const ta = document.createElement('textarea');
+        ta.value = t;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch(e) {}
+        document.body.removeChild(ta);
+      };
+
+      if (navigator.clipboard && window.isSecureContext !== false) {
+        navigator.clipboard.writeText(text).then(() => {}).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+      const original = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
+    });
+
+    /* Click on "I have made the payment" -> show CTA */
+    chat.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      if (btn.textContent && btn.textContent.trim().toLowerCase() === 'i have made the payment') {
+        appendMessage('bot', submitProofCTAHTML());
+        proofCTAShown = true; __saveFlags();
+      }
+    });
+    /* Click on "submit proof of payment to get access and start earning" -> redirect to WhatsApp (same as photo upload) */
+    chat.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const label = (btn.textContent || '').trim().toLowerCase();
+      if (label.includes('submit proof of payment')) {
+        // Build default message from submitted details (same as upload flow)
+        const name  = (window.__fullName || window.__firstName || '(not provided)').trim();
+        const phone = (window.__phone || '(not provided)').toString();
+        const gender = (formEl.querySelector('#qr_gender') || {}).value?.trim() || '';
+    const gmail = (window.__gmail || '(not provided)').toString();
+
+        const text = __buildPrefilledPaymentText(formEl);
+
+
+        function toIntl(n){
+          const digits = String(n).replace(/\D+/g,'');
+          if (digits.startsWith('234')) return digits;
+          if (digits.startsWith('0')) return '234' + digits.slice(1);
+          return digits;
+        }
+
+        const targetRaw = '09160014944';
+        const waUrl = 'https://wa.me/' + toIntl(targetRaw) + '?text=' + encodeURIComponent(text);
+
+        try {
+          window.open(waUrl, '_blank');
+        } catch (e) {
+          const smsUrl = 'sms:' + targetRaw + '?body=' + encodeURIComponent(text);
+          window.location.href = smsUrl;
+        }
+      }
+    });
+
+// Explicit handler for the "submit proof" CTA
+chat.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-action="submit-proof"]');
+  if (!el) return;
+  e.preventDefault();
+  try{
+    const formEl = document.getElementById('quickRegForm') || document;
+    const text = (typeof __buildPrefilledPaymentText === 'function')
+      ? __buildPrefilledPaymentText(formEl)
+      : (function(){
+          // Fallback minimal text
+          const name = (window.__fullName || window.__firstName || '').toString().trim() || 'not provided';
+          const phone = (window.__phone || '').toString().trim() || 'not provided';
+          const plan = (window.__selectedPlan && window.__selectedPlan.label) ? window.__selectedPlan.label : 'not provided';
+          return [
+            '--- Magnus Platform Registration Details ---',
+            'Fullname: ' + name,
+            'Phone number: ' + phone,
+            'Gender: ' + (window.__gender || 'not provided'),
+            'Selected Entry Plan: ' + plan,
+            'Email: not provided',
+            '',
+            '👉 If Email shows "not provided", please type your email above now and manually upload your payment screenshot or receipt in this chat to speed up activation.'
+          ].join('\n');
+        })();
+
+    function toIntl(n){
+      const digits = String(n).replace(/\D+/g,'');
+      if (digits.startsWith('234')) return digits;
+      if (digits.startsWith('0')) return '234' + digits.slice(1);
+      return digits;
+    }
+    const targetRaw = '09160014944';
+    const waUrl = 'https://wa.me/' + toIntl(targetRaw) + '?text=' + encodeURIComponent(text);
+    window.open(waUrl, '_blank');
+  }catch(err){ /* no-op */ }
+});
+
+
+
+
+    // === Registration form handler (delegated) ===
+    const REG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxB7xVH08glgTxnxw1qMo9wrnDE92ZXxpXUdpqgmh6fCgvVcNvGNAn_fv_8TULgznzDaA/exec';
+
+    function __toFormEncoded(data){
+      return Object.keys(data).map(k => encodeURIComponent(k)+'='+encodeURIComponent(data[k])).join('&');
+    }
+
+    chat.addEventListener('submit', async (ev) => {
+      const formEl = ev.target;
+      if (!formEl || formEl.id !== 'quickRegForm') return;
+      ev.preventDefault();
+
+      const name  = (formEl.querySelector('#qr_name')  || {}).value?.trim() || '';
+      const phone = (formEl.querySelector('#qr_phone') || {}).value?.trim() || '';
+      const gender = (formEl.querySelector('#qr_gender') || {}).value?.trim() || '';
+    const gmail = (formEl.querySelector('#qr_gmail') || {}).value?.trim() || '';
+      const btn   = formEl.querySelector('#qr_btn');
+      const okEl  = formEl.querySelector('#qr_ok');
+      const errEl = formEl.querySelector('#qr_err');
+
+      if (!name || !phone) { alert('Please fill all fields.'); return; }
+      // gmail optional — no domain check
+
+      if (okEl) okEl.style.display = 'none';
+      if (errEl) errEl.style.display = 'none';
+      if (btn){
+  btn.disabled = true;
+  const frames = ['Submitting', 'Submitting.', 'Submitting..', 'Submitting...'];
+  let __i = 0;
+  btn.textContent = frames[0];
+  if (btn.__submittingAnim) { clearInterval(btn.__submittingAnim); }
+  btn.__submittingAnim = setInterval(() => {
+    __i = (__i + 1) % frames.length;
+    btn.textContent = frames[__i];
+  }, 300);
+}
+
+      try{
+        const res = await fetch(REG_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: __toFormEncoded({ name: name + ' 🥰', phone, gender: (function(){ var v = (formEl.querySelector('#qr_gender') || {}).value || ''; return v; })() })
+        });
+        if (res.ok){
+          window.__unlockChatAfterForm && window.__unlockChatAfterForm();
+
+          if (okEl) okEl.style.display = 'block';
+          formEl.reset();
+
+          // After 2 seconds, hide the form but keep success visible, then show intro video + save-contacts instructions as a normal message
+          setTimeout(() => {
+            Array.from(formEl.children).forEach(node => {
+              if (node.id !== 'qr_ok') { node.style.display = 'none'; }
+              else { node.style.display = 'block'; }
+            });
+
+            const firstName = (name || '').trim().split(/\s+/)[0] || 'there';
+            window.__firstName = firstName; window.__fullName = name; window.__phone = phone; window.__gmail = gmail;
+
+            // Intro clip before the instructions
+            appendMessage('bot', buildCard('Quick Intro Video', `
+              <p style="margin:0 0 8px 0;">If follow this instructions you will be able to register and start earning like other users.</p>
+              <video src="intro1.mp4" controls autoplay playsinline style="width:100%;height:auto;border:1px solid var(--border);border-radius:12px"></video>
+            `, false));
+
+            // Instructions card with Click to Save
+            // Instructions card with Click to Save (show typing for 3s before showing the card)
+            const __typingMsg1 = appendMessage('bot', `<em>Magnus Platform is typing<span class="dots">.....</span></em>`);
+            const __typingDots1 = __typingMsg1.querySelector('.dots'); let __typingCount1 = 1; __composerLock(true);
+            const __typingTimer1 = setInterval(()=>{ __typingCount1 = (__typingCount1 % 5) + 1; __typingDots1.textContent='.'.repeat(__typingCount1); }, 500);
+            const wrapper = appendMessage('bot', buildCard('Save our contacts', `
+              <div style="font-size:.9em; line-height:1.15;">
+                <p style="margin:0 0 6px 0;">Hi ${firstName}, save our contacts so you can receive your logins and start earning immediately after registration.</p>
+                <ul style="margin:6px 0 0 18px">
+                  <li style="margin:4px 0;"><strong>Android:</strong> tap <em>Click to Save</em> and import the .vcf when prompted.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                  <li style="margin:4px 0;"><strong>iPhone:</strong> tap <em>Click to Save</em> → “Allow” → “Add All Contacts”.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                  <li style="margin:4px 0;"><strong>Desktop:</strong> download the .vcf and open it to add to your contacts.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+                <div class="actions" style="padding:8px 12px;">
+                  <button class="btn primary save-contact-btn" type="button" style="padding:6px 10px;">Click to Save</button>
+                </div>
+              </div>
+            
+            `, false));
+            // Hide the message until typing completes (3s), then reveal it
+            try{ wrapper.parentElement.style.display = 'none'; }catch(e){}
+            setTimeout(()=>{
+              try{
+                clearInterval(__typingTimer1);
+                if (__typingMsg1 && __typingMsg1.parentElement) __typingMsg1.parentElement.remove();
+                __composerLock(false);
+                if (wrapper && wrapper.parentElement) wrapper.parentElement.style.display = '';
+                try{ document.dispatchEvent(new CustomEvent('magnus:saveContactsShown')); }catch(e){}
+              }catch(e){}
+            }, 3000);
+
+
+            const saveBtn = wrapper.querySelector('.save-contact-btn');
+            if (saveBtn){
+              saveBtn.addEventListener('click', async () => {
+                // Build a single VCF file containing two contacts
+                const num1 = '08146573875'.replace(/\s+/g,'');
+                const num2 = '07014262728'.replace(/\s+/g,'');
+                const vcf = [
+                  'BEGIN:VCARD',
+                  'VERSION:3.0',
+                  'N:Nicetopper;;;;',
+                  'FN:Nicetopper',
+                  'TEL;TYPE=CELL:' + num1,
+                  'END:VCARD',
+                  'BEGIN:VCARD',
+                  'VERSION:3.0',
+                  'N:Tramatter;;;;',
+                  'FN:Tramatter',
+                  'TEL;TYPE=CELL:' + num2,
+                  'END:VCARD'
+                ].join('\n');
+
+                try{
+                  const blob = new Blob([vcf], { type: 'text/vcard;charset=utf-8' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'Mentor-Media-contacts.vcf';
+                  document.body.appendChild(a);
+                  a.click();
+                  setTimeout(() => {
+                    URL.revokeObjectURL(url);
+                    a.remove();
+                  }, 3000);
+                }catch(e){
+                  const dataUrl = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcf);
+                  window.location.href = dataUrl;
+                }
+
+                // Keep the instructions; then show follow-up after typing
+                typingThenGlobal(() => {
+                  window.awaitingDone = true;
+                  appendMessage('bot', buildCard('Next Step', `
+                    <p>if you have saved the contact click on the done button below.</p>
+                    <div class="actions">
+                      <button class="btn primary" data-action="done">Done!!</button>
+                    </div>
+                  `, false));
+                });
+              });
+            
+            // === Updated: manual save options as a SEPARATE message after the .vcf card ===
+            (function(){
+              try{
+                // Wait until the "Save our contacts" message has been revealed,
+                // then start the manual message exactly 4 seconds later.
+                document.addEventListener('magnus:saveContactsShown', () => {
+                  setTimeout(() => {
+                    // Show typing for 3 seconds, then reveal the manual options
+                    const __typingMsg2 = appendMessage('bot', `<em>Magnus Platform is typing<span class="dots">.....</span></em>`);
+                    const __typingDots2 = __typingMsg2.querySelector('.dots'); let __typingCount2 = 1; __composerLock(true);
+                    const __typingTimer2 = setInterval(()=>{ __typingCount2 = (__typingCount2 % 5) + 1; __typingDots2.textContent='.'.repeat(__typingCount2); }, 500);
+                    setTimeout(()=>{
+                      try{
+                        clearInterval(__typingTimer2);
+                        if (__typingMsg2 && __typingMsg2.parentElement) __typingMsg2.parentElement.remove();
+                        __composerLock(false);
+                      }catch(e){}
+                      const manualCardHTML = buildCard('Manual Save Options(Copy and Save)', `
+                        <div class="manual-copy-card" style="font-size:.9em; line-height:1.15;">
+                          <p style="margin:0 0 5px 0;">Prefer manual save? Copy each item using the button on its right:</p>
+                          
+                          <!-- Mentor Media-->
+                          <div style="display:grid; gap:4px; padding:5px; border:1px solid var(--border); border-radius:12px; background: var(--surface);">
+                            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                              <span><strong>Name:</strong> Mentor Media(MTM)</span>
+                              <button class="btn secondary" data-action="copy-field" data-label="Name" data-value="Mentor Media (MTM)" style="padding:4px 8px; font-size:.85em;">Copy Name</button>
+                            </div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                              <span><strong>Number:</strong> <code>08157823869</code></span>
+                              <button class="btn secondary" data-action="copy-field" data-label="Phone" data-value="08157823869" style="padding:4px 8px; font-size:.85em;">Copy Number</button>
+                            </div>
+                          </div>
+
+                          <!-- BigCEO -->
+                          <div style="display:grid; gap:4px; padding:5px; border:1px solid var(--border); border-radius:12px; background: var(--surface); margin-top:5px;">
+                            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                              <span><strong>Name:</strong> BigCEO</span>
+                              <button class="btn secondary" data-action="copy-field" data-label="Name" data-value="BigCEO" style="padding:4px 8px; font-size:.85em;">Copy Name</button>
+                            </div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                              <span><strong>Number:</strong> <code>07048498809</code></span>
+                              <button class="btn secondary" data-action="copy-field" data-label="Phone" data-value="07048498809" style="padding:4px 8px; font-size:.85em;">Copy Number</button>
+                            </div>
+                          </div>
+                        </div>
+                      <div class="actions" style="margin-top:6px;">
+                        <button class="btn primary" data-action="done">Done!!</button>
+                      </div>
+                      `, false);
+                      appendMessage('bot', manualCardHTML);
+                    }, 3000); // typing for 3s
+                  }, 4000); // show manual message 4s AFTER "Save our contacts" is shown
+                }, { once: true });
+              }catch(e){}
+            })();
+}
+
+          }, 2000);
+        }else{
+          if (errEl) errEl.style.display = 'block';
+        }
+      }catch(e){
+        if (errEl) errEl.style.display = 'block';
+      }finally{ if (btn){ btn.disabled = false; if (btn && btn.__submittingAnim){ try{ clearInterval(btn.__submittingAnim); }catch(e){} btn.__submittingAnim = null; } btn.textContent = 'Submit'; } }
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      appendMessage('user', escapeHTML(text));
+
+      __composerLock(true);
+      const typingBubble = appendMessage('bot', `<em>Magnus Platform is typing<span class="dots">.....</span></em>`);
+      const dotsEl = typingBubble.querySelector('.dots');
+      let dotCount = 1;
+      const dotsTimer = setInterval(() => {
+        dotCount = (dotCount % 5) + 1;
+        dotsEl.textContent = '.'.repeat(dotCount);
+      }, 500);
+
+      setTimeout(() => {
+        clearInterval(dotsTimer);
+        typingBubble.parentElement.remove();
+        __composerLock(false);
+
+        // If we're waiting for Done, any reply counts as Done
+        if (window.awaitingDone === true) {
+          window.awaitingDone = false;
+          const nameX = ((window.__fullName || window.__firstName || text) || '').trim();
+          const helloX = nameX ? `Nice to meet you, <strong>${escapeHTML(nameX)}</strong>!` : `Great!`;
+          if (window.howItWorksShown) {
+          const __acctMaybe = findCountryAccount(text);
+          if (__acctMaybe){
+            appendMessage('bot', bankCardHTML(__acctMaybe));
+            paymentDetailsShown = true; proofCTAShown = false;
+            expectingCountry = false; __saveFlags(); if (!window.__countdownStarted){ window.__countdownStarted = true; setTimeout(() => { __startPaymentCountdown(); }, 4000);}
+            input.value=''; input.focus(); return;
+          }
+          appendMessage('bot', `Are you sure you are following my instructions?<br>Ask Questions</em>.`);
+          input.value=''; input.focus(); return;
+        }
+          window.howItWorksShown = true;
+          appendMessage('bot', `${helloX} Here’s how <strong>Magnus Platform</strong> works:`);
+          typingThenGlobal(()=>{
+            appendMessage('bot', buildCard('Step 1 — Get Started', `<a href="#" class="read-more" data-target="step-1---get-started" style="display:inline-block;margin-top:6px;font-weight:600;text-decoration:underline;">Read more</a>
+<div class="collapsible" data-card="step-1---get-started" style="display:none;"><img loading="lazy" src='Magnuspr1.png' alt='Step 1' style='max-width:100%;margin-bottom:10px;'>
+              <ul>
+                
+              </ul>
+                <ul>
+                <li>⭐️ 🛡️ Refund protection. If you don’t earn up to your application fee in 1 month, request a refund.<br>→ : Your ₦11,000 is protected</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🎓 Learn a skill → get certified → . And apply for jobs outside Magnus.<br>→ Earn up to: ₦5,000/day ≈ ₦150,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 📣 Magnus runs the ads; you keep the profit. No ad skills needed.<br>→ Earn up to: 5 sales/month × ₦5,000 = ₦25,000</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ With this Entry Plan you can not create a digital product, you won’t have access to all digital courses and tools, your resale rights are limited but you can earn upto 200k monthly with hardwork.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⚡ Promoters in your network pay you daily. Each promoter gives you ₦7,500/day.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👉🔛 Needs renewal every 4 months.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🔗 If anyone joins with your link, you get ₦17,100; for each person they invite, you get ₦1,300.<br>→ Earn up to: ₦17,100 per direct + ₦350 per 2nd-level (e.g., 5 directs + 20 2nd-level = ₦111,500)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👑 VIP group access. Learn directly from people who are earning ₦200k–₦1M/month.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⏳ Limited slots + price change. Only 10 Magnus Lite Entry spots left; last 3 will pay ₦20k. It’s ₦11k now.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+
+                <p>Click the Choose(Magnus Lite) button below this texts to Start with this package.</p>
+
+            </div>
+<div class="actions">
+              <button class="btn primary" data-action="choose-lite">Choose (Magnus Lite)</button>
+            </div>`, false));
+            typingThenGlobal(()=>{
+              appendMessage('bot', buildCard('Step 2 — Start Earning', `<a href="#" class="read-more" data-target="step-2---start-earning" style="display:inline-block;margin-top:6px;font-weight:600;text-decoration:underline;">Read more</a>
+<div class="collapsible" data-card="step-2---start-earning" style="display:none;"><img loading="lazy" src='Magnuspr2.png' alt='Step 2' style='max-width:100%;margin-bottom:10px;'>
+                <ul>
+                  
+                </ul>
+                <ul>
+                <li>⭐️ 🛡️ Refund protection. If you don’t earn up to your application fee in 1 month, request a refund.<br>→ : Your ₦17,500 is protected</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🎓 Learn a skill → get certified → Magnus gives you jobs and you start earning. No long process.<br>→ Earn up to: ₦5,000/day ≈ ₦150,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 📣 Magnus runs the ads; you keep the profit. No ad skills needed.<br>→ Earn up to: 30 sales/month × ₦20,000 = ₦600,000</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🏆 Magnus Business tier = bigger earnings + recognition. Gifts, shout-outs, top-earner board.<br>→ Earn up to: ≈ ₦550,000/month;</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⚡ Promoters in your network pay you daily. Each promoter gives you ₦7,500/day.<br>→ : 2 promoters = ₦15,000/day ≈ ₦450,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ Entry fee must be renewed every 6 months</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🔗 No referrals needed to earn. But if someone joins with your link, you get ₦11,500; for each person they invite, you get ₦1,300.<br>→ Earn up to: ₦11,500 per direct + ₦650 per 2nd-level (e.g., 5 directs + 20 2nd-level = ₦75,000)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👑 VIP group access. Learn directly from people who are earning ₦1M–₦3M/month.<br>→ Earn up to: ₦1,000,000–₦3,000,000/month by copying them</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⏳ Limited slots + price change. Only 10 Magnus Business Entry spots left; last 3 will pay ₦50k. It’s ₦17k now.<br>→ Earn up to: Save ₦33,000 if you join before the increase</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ You can upgrade to Magnus Business Plan Later.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+
+                <p>Click the Choose(Magnus Pro) button below this texts to Start with this package.</p>
+
+            </div>
+<div class="actions">
+              <button class="btn primary" data-action="choose-pro">Choose (Magnus Pro)</button>
+            </div>`, false));
+              typingThenGlobal(()=>{
+                appendMessage('bot', buildCard('Step 3 — Grow Bigger', `<a href="#" class="read-more" data-target="step-3---grow-bigger" style="display:inline-block;margin-top:6px;font-weight:600;text-decoration:underline;">Read more</a>
+<div class="collapsible" data-card="step-3---grow-bigger" style="display:none;"><img loading="lazy" src='Magnuspr3.png' alt='Step 3' style='max-width:100%;margin-bottom:10px;'>
+                  <ul>
+                    
+                  </ul>
+                <ul>
+                <li>⭐️ 🛡️ Refund protection. If you don’t earn up to your application fee in 1 month, request a refund.<br>→ : Your ₦28,000 is protected</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🆓 No extra fees to continue or upgrade.<br>→ : 0 extra cost</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🎓 Learn a skill → get certified → Magnus gives you jobs and you start earning. No long process.<br>→ Earn up to: ₦5,000/day ≈ ₦150,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 📣 Magnus runs the ads; you keep the profit. No ad skills needed.<br>→ Earn up to: 30 sales/month × ₦20,000 = ₦600,000</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🛒 Create your course or resell tools/courses. Magnus helps sell fast.<br>→ Earn up to: 1 sale/day at ₦20,000 ≈ ₦600,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🏆 As a Magnus Business User, You get bigger earnings + recognition. Gifts, shout-outs,and will be listed among top-earners board.<br>→ Earn up to: ≈ ₦1,000,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⚡ Promoters in your network pay you daily. Each promoter gives you ₦7,500/day.<br>→ : 2 promoters = ₦15,000/day ≈ ₦450,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 💼 PayFac roles (Only Magnus Business users only). Top partners earn big.<br>→ Earn up to: ₦2,000,000+/month as a PayFac</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🔗 No referrals needed to earn. But if someone joins with your link, you get ₦17,100; for each person they invite, you get ₦1,300.<br>→ Earn up to: ₦17,100 per direct + ₦1,300 per 2nd-level (e.g., 5 directs + 20 2nd-level = ₦111,500)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🧑‍🏫 Fast support. If you are Stuck, Magnus links you to a top coach for quick fixes.<br>→: Faster setup → earlier earnings (time saved = more money)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👑 VIP group access. Learn directly from people who are earning ₦1M–₦3M/month.<br>→ Earn up to: ₦1,000,000–₦3,000,000/month by copying them</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⏳ Limited slots + price change. Only 10 Magnus Business Entry spots left; last 3 will pay ₦100k. It’s ₦28k now.<br>→ Earn up to: Save ₦72,000 if you join before the increase</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+
+                <p>Click the Choose(Magnus Business) button below this texts to Start with this package.</p>
+
+            </div>
+<div class="actions">
+              <button class="btn primary" data-action="choose-business">Choose (Magnus Business)</button>
+            </div>`, false));
+                typingThenGlobal(()=>{
+                  appendMessage('bot', buildCard('Step 4 — Unlock Bonuses', `
+                    <ul>
+                      <li>⭐️ <strong>Daily goals</strong> — hit milestones for streak rewards.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                      <li>⭐️ <strong>Referral boosts</strong> — share your code to multiply earnings.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                    </ul>
+                    <div class="actions" style="margin-top:10px;">
+                      <button class="btn primary" data-action="choose">Explain More</button>
+                    </div>
+                  `, false));
+                  typingThenGlobal(()=>{
+                    appendMessage('bot', buildCard('Step 5 — Quick Video', `
+                      <p style="margin:0 0 8px 0;">Watch this quick clip, then proceed when you're ready.</p>
+                      <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls autoplay playsinline style="width:100%;height:auto;border:1px solid var(--border);border-radius:12px"></video>
+                      <div class="actions" style="margin-top:10px;">
+                        <button class="btn secondary" data-action="choose-business">I am ready</button>
+                      </div>
+                    `, false));
+                  });
+                });
+              });
+            });
+          });
+          input.value=''; input.focus(); return;
+        }
+
+                /* Direct country mention -> immediately show payment details (new) */
+        const __acctDirect = findCountryAccount(text);
+        if (!expectingCountry && __acctDirect){
+          appendMessage('bot', bankCardHTML(__acctDirect));
+          paymentDetailsShown = true; proofCTAShown = false;
+          expectingCountry = false; __saveFlags(); if (!window.__countdownStarted){ window.__countdownStarted = true; setTimeout(() => { __startPaymentCountdown(); }, 4000);}
+          input.value = ''; input.focus(); return;
+        }
+
+        if (expectingCountry){
+          const acct = findCountryAccount(text);
+          if (acct){
+            appendMessage('bot', bankCardHTML(acct));
+            paymentDetailsShown = true; proofCTAShown = false;
+            expectingCountry = false; __saveFlags(); if (!window.__countdownStarted){ window.__countdownStarted = true; setTimeout(() => { __startPaymentCountdown(); }, 4000);}
+            input.value = '';
+            input.focus();
+            return;
+          } else {
+            appendMessage('bot', buildCard('Country Not Found', `
+              <p>Please reply with the <strong>country name only</strong> from the list above.</p>
+            `, false));
+            input.value = '';
+            input.focus();
+            return;
+          }
+        }
+
+        /* After payment details, any next message should receive the proof submission CTA once */
+        if (paymentDetailsShown && !proofCTAShown){
+          appendMessage('bot', submitProofCTAHTML());
+          proofCTAShown = true; __saveFlags();
+          input.value = '';
+          input.focus();
+          return;
+        }
+
+        const negative = ["fake","scam","scammer","prove","withdraw","proof","fraud"];
+        const positive = ["ready","register","start","how to","signup","join","earn","member","create","account","code","registration fee","fee"];
+
+        if (containsAny(text, negative)) {
+          showProofSequence();
+          input.value = '';
+          input.focus();
+          return;
+        }
+        if (containsAny(text, positive)) {
+          appendMessage('bot', countryPrompt);
+          expectingCountry = true; __saveFlags();
+          input.value = '';
+          input.focus();
+          return;
+        }
+
+        const hello = text ? `Nice to meet you, <strong>${escapeHTML(text)}</strong>!` : `Great!`;
+        if (window.howItWorksShown) {
+          const __acctMaybe = findCountryAccount(text);
+          if (__acctMaybe){
+            appendMessage('bot', bankCardHTML(__acctMaybe));
+            paymentDetailsShown = true; proofCTAShown = false;
+            expectingCountry = false; __saveFlags(); if (!window.__countdownStarted){ window.__countdownStarted = true; setTimeout(() => { __startPaymentCountdown(); }, 4000);}
+            input.value=''; input.focus(); return;
+          }
+          appendMessage('bot', `Are you sure you are following my instructions?<br>Ask Questions</em>.`);
+          input.value=''; input.focus(); return;
+        }
+        window.howItWorksShown = true;
+        appendMessage('bot', `${hello} Here’s how <strong>Magnus Platform</strong> works:`);
+
+        appendMessage('bot', "<div style=\"white-space: pre-wrap\">\ud83c\udf93 What Magnus is\n An e-learning platform. Learn a money-making skill and get shown how to earn with it.\n\n\ud83c\udf93 How You Can Earn\n Resell digital products: up to \u20a66k/day, \u20a6250k/week, \u20a62.5m/month.\n\n\ud83c\udf93 List your own product: up to \u20a65k/day, \u20a6150k/week, \u20a61.5m/month.\n\n\ud83c\udf93 Invite friends: earn a share of their earnings + Magnus bonus (up to \u20a61m/month).\n\n\ud83c\udf93 Do micro-jobs while learning (posting, reviews, PayFac checks, copy &amp; pay): up to \u20a6300k/month from day one.\n\n\ud83c\udf93 Certificate + Job\n In school, you get certified but no job. But Magnus Platform Certify you and employ with a daily pay of not less than 5k daily.\n\nHow To Join Magnus : \n\ud83c\udf93Chose a plan you can afford.\n\n Entry Plans\n\ud83c\udf93 Magnus Business \u2013 Best for fastest, highest earnings. Choose if you want to be a top earner. (Users earn upto 3.5 million monthly)\n\n\ud83c\udf93 Magnus Pro \u2013 Strong middle plan with some limits; you can still rise to the top. (users earn upto 365k every two weeks) \n\n\ud83c\udf93 Magnus Lite \u2013 For beginners or low budget. One skill now; upgrade later.\n(Users Earn upto 500k monthly)</div>");
+function typingThen(cb){
+          __composerLock(true);
+          const t = appendMessage('bot', `<em>Magnus Platform is typing<span class="dots">.....</span></em>`);
+          const d = t.querySelector('.dots');
+          let c = 1;
+          const tm = setInterval(()=>{ c=(c%5)+1; d.textContent='.'.repeat(c); }, 500);
+          setTimeout(()=>{
+            clearInterval(tm);
+            t.parentElement.remove();
+            __composerLock(false);
+            cb && cb();
+          }, 6000);
+        }
+
+        typingThen(()=>{
+          appendMessage('bot', buildCard('Step 1 — Get Started', `<a href="#" class="read-more" data-target="step-1---get-started" style="display:inline-block;margin-top:6px;font-weight:600;text-decoration:underline;">Read more</a>
+<div class="collapsible" data-card="step-1---get-started" style="display:none;"><img loading="lazy" src='Magnuspr1.png' alt='Step 1' style='max-width:100%;margin-bottom:10px;'>
+            <ul>
+              
+            </ul>
+                <ul>
+                <li>⭐️ 🛡️ Refund protection. If you don’t earn up to your application fee in 1 month, request a refund.<br>→ : Your ₦11,000 is protected</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🎓 Learn a skill → get certified → . And apply for jobs outside Magnus.<br>→ Earn up to: ₦5,000/day ≈ ₦150,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 📣 Magnus runs the ads; you keep the profit. No ad skills needed.<br>→ Earn up to: 5 sales/month × ₦5,000 = ₦25,000</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ With this Entry Plan you can not create a digital product, you won’t have access to all digital courses and tools, your resale rights are limited but you can earn upto 200k monthly with hardwork.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⚡ Promoters in your network pay you daily. Each promoter gives you ₦7,500/day.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👉🔛 Needs renewal every 4 months.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🔗 If anyone joins with your link, you get ₦17,100; for each person they invite, you get ₦1,300.<br>→ Earn up to: ₦17,100 per direct + ₦350 per 2nd-level (e.g., 5 directs + 20 2nd-level = ₦111,500)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👑 VIP group access. Learn directly from people who are earning ₦200k–₦1M/month.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⏳ Limited slots + price change. Only 10 Magnus Lite Entry spots left; last 3 will pay ₦20k. It’s ₦11k now.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+
+                <p>Click the Choose(Magnus Lite) button below this texts to Start with this package.</p>
+
+            
+    </div>
+<div class="actions">
+              <button class="btn primary" data-action="choose-lite">Choose (Magnus Lite)</button>
+            </div>`, false));
+
+          typingThen(()=>{
+            appendMessage('bot', buildCard('Step 2 — Start Earning', `<a href="#" class="read-more" data-target="step-2---start-earning" style="display:inline-block;margin-top:6px;font-weight:600;text-decoration:underline;">Read more</a>
+<div class="collapsible" data-card="step-2---start-earning" style="display:none;"><img loading="lazy" src='Magnuspr2.png' alt='Step 2' style='max-width:100%;margin-bottom:10px;'>
+              <ul>
+                
+              </ul>
+                <ul>
+                <li>⭐️ 🛡️ Refund protection. If you don’t earn up to your application fee in 1 month, request a refund.<br>→ : Your ₦17,500 is protected</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🎓 Learn a skill → get certified → Magnus gives you jobs and you start earning. No long process.<br>→ Earn up to: ₦5,000/day ≈ ₦150,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 📣 Magnus runs the ads; you keep the profit. No ad skills needed.<br>→ Earn up to: 30 sales/month × ₦20,000 = ₦600,000</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🏆 Magnus Business tier = bigger earnings + recognition. Gifts, shout-outs, top-earner board.<br>→ Earn up to: ≈ ₦550,000/month;</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⚡ Promoters in your network pay you daily. Each promoter gives you ₦7,500/day.<br>→ : 2 promoters = ₦15,000/day ≈ ₦450,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ Entry fee must be renewed every 6 months</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🔗 No referrals needed to earn. But if someone joins with your link, you get ₦11,500; for each person they invite, you get ₦1,300.<br>→ Earn up to: ₦11,500 per direct + ₦650 per 2nd-level (e.g., 5 directs + 20 2nd-level = ₦75,000)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👑 VIP group access. Learn directly from people who are earning ₦1M–₦3M/month.<br>→ Earn up to: ₦1,000,000–₦3,000,000/month by copying them</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⏳ Limited slots + price change. Only 10 Magnus Business Entry spots left; last 3 will pay ₦50k. It’s ₦17k now.<br>→ Earn up to: Save ₦33,000 if you join before the increase</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ You can upgrade to Magnus Business Plan Later.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+
+                <p>Click the Choose(Magnus Pro) button below this texts to Start with this package.</p>
+
+            
+    </div>
+<div class="actions">
+              <button class="btn primary" data-action="choose-pro">Choose (Magnus Pro)</button>
+            </div>`, false));
+
+            typingThen(()=>{
+              appendMessage('bot', buildCard('Step 3 — Grow Bigger', `<a href="#" class="read-more" data-target="step-3---grow-bigger" style="display:inline-block;margin-top:6px;font-weight:600;text-decoration:underline;">Read more</a>
+<div class="collapsible" data-card="step-3---grow-bigger" style="display:none;"><img loading="lazy" src='Magnuspr3.png' alt='Step 3' style='max-width:100%;margin-bottom:10px;'>
+                <ul>
+                  
+                </ul>
+                <ul>
+                <li>⭐️ 🛡️ Refund protection. If you don’t earn up to your application fee in 1 month, request a refund.<br>→ : Your ₦28,000 is protected</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🆓 No extra fees to continue or upgrade.<br>→ : 0 extra cost</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🎓 Learn a skill → get certified → Magnus gives you jobs and you start earning. No long process.<br>→ Earn up to: ₦5,000/day ≈ ₦150,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 📣 Magnus runs the ads; you keep the profit. No ad skills needed.<br>→ Earn up to: 30 sales/month × ₦20,000 = ₦600,000</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🛒 Create your course or resell tools/courses. Magnus helps sell fast.<br>→ Earn up to: 1 sale/day at ₦20,000 ≈ ₦600,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🏆 As a Magnus Business User, You get bigger earnings + recognition. Gifts, shout-outs,and will be listed among top-earners board.<br>→ Earn up to: ≈ ₦1,000,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⚡ Promoters in your network pay you daily. Each promoter gives you ₦7,500/day.<br>→ : 2 promoters = ₦15,000/day ≈ ₦450,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 💼 PayFac roles (Only Magnus Business users only). Top partners earn big.<br>→ Earn up to: ₦2,000,000+/month as a PayFac</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🔗 No referrals needed to earn. But if someone joins with your link, you get ₦17,100; for each person they invite, you get ₦1,300.<br>→ Earn up to: ₦17,100 per direct + ₦1,300 per 2nd-level (e.g., 5 directs + 20 2nd-level = ₦111,500)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🧑‍🏫 Fast support. If you are Stuck, Magnus links you to a top coach for quick fixes.<br>→: Faster setup → earlier earnings (time saved = more money)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👑 VIP group access. Learn directly from people who are earning ₦1M–₦3M/month.<br>→ Earn up to: ₦1,000,000–₦3,000,000/month by copying them</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⏳ Limited slots + price change. Only 10 Magnus Business Entry spots left; last 3 will pay ₦100k. It’s ₦28k now.<br>→ Earn up to: Save ₦72,000 if you join before the increase</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+
+                <p>Click the Choose(Magnus Business) button below this texts to Start with this package.</p>
+
+            
+    </div>
+<div class="actions">
+              <button class="btn primary" data-action="choose-business">Choose (Magnus Business)</button>
+            </div>`, false));
+
+              typingThen(()=>{
+                appendMessage('bot', buildCard('Step 4 — Unlock Bonuses', `
+                  <ul>
+                    <li>⭐️ <strong>Daily goals</strong> — hit milestones for streak rewards.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                    <li>⭐️ <strong>Referral boosts</strong> — share your code to multiply earnings.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                  </ul>
+                  <div class="actions" style="margin-top:10px;">
+                    <button class="btn primary" data-action="choose">Explain More</button>
+                  </div>
+                `, false));
+
+                typingThen(()=>{
+                  appendMessage('bot', buildCard('Step 5 — Quick Video', `
+                    <p style="margin:0 0 8px 0;">Watch this quick clip, then proceed when you're ready.</p>
+                    <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls autoplay playsinline style="width:100%;height:auto;border:1px solid var(--border);border-radius:12px"></video>
+                    <div class="actions" style="margin-top:10px;">
+                      <button class="btn secondary" data-action="ready">Ask Questions</button>
+                    </div>
+                  `, false));
+                });
+              });
+            });
+          });
+        });
+
+      }, 6000);
+
+      input.value = '';
+      input.focus();
+    });
+
+    // Fetch IP and restore chat; greet still handles first-time
+    window.addEventListener('DOMContentLoaded', () => {
+    /* === Revisit count + Popup cycle (added) === */
+
+    function __installRestartButton(){
+      try{
+        const bar = document.querySelector('.bar');
+        if (!bar) return;
+        let btn = document.getElementById('restartBtn');
+        if (!btn){
+          btn = document.createElement('button');
+          btn.id = 'restartBtn';
+          btn.className = 'restart-btn';
+          btn.type = 'button';
+          btn.textContent = 'Restart chat';
+          bar.appendChild(btn);
+          btn.addEventListener('click', __restartChat);
+        }
+      }catch(e){}
+    }
+
+    function __restartChat(){
+      try{
+        // Remove floating widgets / promos
+        const floater = document.querySelector('.mpc-floater'); if (floater) floater.remove();
+        document.querySelectorAll('.promo').forEach(n => n.remove());
+        const pBadge = document.getElementById('promoBadge'); if (pBadge) pBadge.remove();
+        // Reset chat DOM
+        chat.innerHTML = '';
+        // Reset flags
+        window.howItWorksShown = false;
+        window.paymentDetailsShown = false;
+        window.proofCTAShown = false;
+        window.expectingCountry = false;
+        window.__magnusRestored = false;
+        // Clear persisted items for this IP
+        try{
+          localStorage.removeItem(__key());
+          localStorage.removeItem(__key('flags'));
+          localStorage.removeItem(__key('countdownEnd'));
+          localStorage.removeItem(__key('floaterPos'));
+          localStorage.removeItem(__key('floaterMin'));
+          localStorage.setItem(__key('visits'), '0'); // reset revisits
+        }catch(e){}
+        // Refresh navbar badge to 0
+        __updateVisitBadge(0);
+        // Save fresh flags and show greeting
+        try{ __saveFlags(); }catch(e){}
+        try{ greet(); }catch(e){}
+        input.focus();
+      }catch(e){}
+    }
+
+    function __updateVisitBadge(revisits){
+      try{
+        const bar = document.querySelector('.bar .sub') || document.querySelector('.bar');
+        if (!bar) return;
+        let badge = document.getElementById('visitBadge');
+        if (!badge){
+          badge = document.createElement('span');
+          badge.id = 'visitBadge';
+          badge.className = 'visit-badge';
+          bar.appendChild(badge);
+        }
+        badge.textContent = `Revisits: ${revisits}`;
+        __installRestartButton();
+      }catch(e){}
+    }
+
+    function __nextRevisitIndex(visits){
+      // visits: 1 = first visit (not a revisit); 2 = first revisit; 3 = second, etc.
+      // Sequence for revisits: 0 (img1), 1 (img2), 2 (video1), 3 (video2), repeat
+      if (visits < 2) return -1;
+      return (visits - 2) % 4;
+    }
+
+    function __promoHTML(kind, idx){
+      const titles = [
+        'Welcome Back #1',
+        'Welcome Back #2',
+        'Quick Demo Clip',
+        'Member Story'
+      ];
+      const texts = [
+        'Fresh tips to increase your earnings today.',
+        'See how top members ramp up faster.',
+        'A 30s look at the dashboard basics.',
+        'How consistent tasks compound results.'
+      ];
+      if (kind === 'image'){
+        const seed = `promo_${idx+1}_${Date.now()%10000}`;
+        return `<div class="promo" role="dialog" aria-modal="true">
+          <div class="promo-card">
+            <div class="promo-head">
+              <div>Magnus CEO</div>
+              <button class="promo-close" title="Minimize" aria-label="Minimize">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.3 5.71 12 12.01l-6.29-6.3-1.42 1.42 6.3 6.29-6.3 6.29 1.42 1.42 6.29-6.3 6.29 6.3 1.42-1.42-6.3-6.29 6.3-6.29z"/></svg>
+              </button>
+            </div>
+            <div class="promo-body">
+              <figure>
+                <img loading="lazy" src="https://picsum.photos/seed/${seed}/600/600" alt="Welcome back illustration">
+                <figcaption>
+                  <h1>${titles[idx%titles.length]}</h1>
+                  <p>${texts[idx%texts.length]}</p>
+                </figcaption>
+                <div class="promo-actions" style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
+                  <button class="btn secondary promo-remove" type="button">click here to remove the video</button>
+                  <button class="btn primary promo-register" type="button">Click here to register and earn fast</button>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </div>`;
+      } else {
+        const vids = [
+          'https://www.w3schools.com/html/mov_bbb.mp4',
+          'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4'
+        ];
+        const vsrc = vids[idx % vids.length];
+        return `<div class="promo" role="dialog" aria-modal="true">
+          <div class="promo-card">
+            <div class="promo-head">
+              <div>Magnus CEO</div>
+              <button class="promo-close" title="Minimize" aria-label="Minimize">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.3 5.71 12 12.01l-6.29-6.3-1.42 1.42 6.3 6.29-6.3 6.29 1.42 1.42 6.29-6.3 6.29 6.3 1.42-1.42-6.3-6.29 6.3-6.29z"/></svg>
+              </button>
+            </div>
+            <div class="promo-body">
+              <figure>
+                <video src="${vsrc}" controls autoplay playsinline></video>
+                <figcaption>
+                  <h1>${titles[(idx+2)%titles.length]}</h1>
+                  <p>${texts[(idx+2)%titles.length]}</p>
+                </figcaption>
+                <div class="promo-actions" style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
+                  <button class="btn secondary promo-remove" type="button">click here to remove the video</button>
+                  <button class="btn primary promo-register" type="button">Click here to register and earn fast</button>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </div>`;
+      }
+    }
+
+    function __showRevisitPopup(visits){
+      const idx = __nextRevisitIndex(visits);
+      if (idx < 0) return; // first visit: no popup
+
+      const kind = (idx < 2) ? 'image' : 'video';
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = __promoHTML(kind, idx);
+      const node = wrapper.firstElementChild;
+      document.body.appendChild(node);
+
+      const closeBtn = node.querySelector('.promo-close');
+      const card = node.querySelector('.promo-card');
+      function minimize(){
+        // "Minimize": hide overlay and leave a small corner badge the user can re-open
+        node.style.display = 'none';
+        // Add a tiny floating badge bottom-left
+        let badge = document.getElementById('promoBadge');
+        if (!badge){
+          badge = document.createElement('button');
+          badge.id = 'promoBadge';
+          badge.setAttribute('type','button');
+          badge.textContent = 'Open promo';
+          badge.style.position='fixed'; badge.style.left='12px'; badge.style.bottom='88px';
+          badge.style.zIndex='1001'; badge.style.padding='8px 10px'; badge.style.borderRadius='10px';
+          badge.style.border='1px solid var(--border)'; badge.style.background='rgba(0,0,0,0.7)'; badge.style.color='var(--text)';
+          document.body.appendChild(badge);
+          badge.addEventListener('click', ()=>{ node.style.display='flex'; badge.remove(); });
+        }
+      }
+      if (closeBtn){
+        closeBtn.addEventListener('click', minimize);
+      }
+      // Extra handlers for video popups
+      {
+        if (kind === 'video'){
+          const vid = node.querySelector('video');
+          if (vid){
+            try { vid.muted = false; vid.volume = 1.0; vid.autoplay = true; } catch(e){}
+            const tryPlay = () => { const p = vid.play(); if (p && p.catch) { p.catch(()=>{}); } };
+            tryPlay();
+            const resume = () => { try { vid.muted = false; vid.volume = 1.0; tryPlay(); } catch(e){} document.removeEventListener('click', resume); };
+            document.addEventListener('click', resume, {once:true});
+          }
+        }
+        const removeBtn = node.querySelector('.promo-remove');
+        if (removeBtn){ removeBtn.addEventListener('click', () => { node.remove(); }); }
+        const regBtn = node.querySelector('.promo-register');
+        if (regBtn){ regBtn.addEventListener('click', () => {
+          appendMessage('user', 'I am ready');
+          appendMessage('bot', countryPrompt);
+          expectingCountry = true; try{ __saveFlags(); }catch(e){}
+          node.remove();
+        }); }
+      }
+    }
+
+      __getIP().then(() => { __restoreChat(); __saveFlags(); let visits = parseInt(localStorage.getItem(__key('visits'))||'0',10); visits = isNaN(visits) ? 0 : visits; visits += 1; localStorage.setItem(__key('visits'), String(visits)); __updateVisitBadge(Math.max(0, visits - 1)); __installRestartButton(); __showRevisitPopup(visits); if (window.paymentDetailsShown) { __startPaymentCountdown(); const f=document.querySelector('.mpc-floater'); if (f) __attachFloaterControls(f); } });
+    });
+
+    // Upload image icon -> file chooser; redirect to chat with prefilled text
+    (function(){
+      const ub = document.getElementById('uploadBtn');
+      const fi = document.getElementById('uploadImage');
+      if (ub && fi){
+        ub.addEventListener('click', () => fi.click());
+        fi.addEventListener('change', () => {
+          const f = fi.files && fi.files[0];
+          const formEl = document.getElementById('quickRegForm') || document;
+          if (!f) return;
+
+          // Build default message from submitted details
+          const name  = (window.__fullName || window.__firstName || '(not provided)').trim();
+          const phone = (window.__phone || '(not provided)').toString();
+          const gender = (formEl.querySelector('#qr_gender') || {}).value?.trim() || '';
+    const gmail = (window.__gmail || '(not provided)').toString();
+
+          const text = __buildPrefilledPaymentText(formEl);
+
+
+          function toIntl(n){
+            const digits = String(n).replace(/\D+/g,'');
+            if (digits.startsWith('234')) return digits;
+            if (digits.startsWith('0')) return '234' + digits.slice(1);
+            return digits;
+          }
+
+          const targetRaw = '09160014944';
+          const waUrl = 'https://wa.me/' + toIntl(targetRaw) + '?text=' + encodeURIComponent(text);
+
+          try {
+            if (!window.open(waUrl, '_blank')) { window.location.href = waUrl; }
+          } catch (e) {
+            const smsUrl = 'sms:' + targetRaw + '?body=' + encodeURIComponent(text);
+            window.location.href = smsUrl;
+          }
+          fi.value = '';
+        });
+      }
+    })();
+
+    // Start steps when user clicks Done!!
+    chat.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action="done"]');
+      if (!btn) return;
+
+      appendMessage('user', 'Done!!');
+
+      if (window.howItWorksShown) {
+        appendMessage('bot', `Are you sure you are following my instructions?<br>Ask Questions</em>.`);
+        return;
+      }
+
+      const name = (window.__fullName || window.__firstName || '').trim();
+      const hello = name ? `Nice to meet you, <strong>${escapeHTML(name)}</strong>!` : `Great!`;
+      window.howItWorksShown = true;
+      appendMessage('bot', `${hello} Here’s how <strong>Magnus Platform</strong> works:`);
+
+      appendMessage('bot', "<div style=\"white-space: pre-wrap\">\ud83c\udf93 What Magnus is? \n Magnus Digital Platform is An e-learning platform.You learn a money-making skill and get shown how to earn with it.\n\n\ud83c\udf93 How You Can Earn\n Resell digital products: up to \u20a66k/day, \u20a6250k/week, \u20a62.5m/month.\n\n\ud83c\udf93 List your own product: up to \u20a65k/day, \u20a6150k/week, \u20a61.5m/month.\n\n\ud83c\udf93 Invite friends: earn a share of their earnings + Magnus bonus (up to \u20a61m/month).\n\n\ud83c\udf93 Do micro-jobs while learning (posting, reviews, PayFac checks, copy &amp; pay): up to \u20a6300k/month from day one.\n\n\ud83c\udf93 Certificate + Job\n In school, you get certified but no job. But Magnus Platform Certify you and employ with a daily pay of not less than 5k daily.\n\nHow To Join Magnus : \n\ud83c\udf93Chose a plan you can afford.\n\n Entry Plans\n\ud83c\udf93 Magnus Business \u2013 Best for fastest, highest earnings. Choose if you want to be a top earner. (Users earn upto 3.5 million monthly)\n\n\ud83c\udf93 Magnus Pro \u2013 Strong middle plan with some limits; you can still rise to the top. (users earn upto 365k every two weeks) \n\n\ud83c\udf93 Magnus Lite \u2013 For beginners or low budget. One skill now; upgrade later.\n(Users Earn upto 500k monthly)</div>");
+typingThenGlobal(()=>{
+        appendMessage('bot', buildCard('Magnus Lite — ₦11,000', `<a href="#" class="read-more" data-target="step-1---get-started" style="display:inline-block;margin-top:6px;font-weight:600;text-decoration:underline;">Read more</a>
+<div class="collapsible" data-card="step-1---get-started" style="display:none;"><img loading="lazy" src='Magnuspr1.png' alt='Step 1' style='max-width:100%;margin-bottom:10px;'>
+          <ul>
+            
+          </ul>
+                <ul>
+                <li>⭐️ 🛡️ Refund protection. If you don’t earn up to your application fee in 1 month, request a refund.<br>→ : Your ₦11,000 is protected</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🎓 Learn a skill → get certified → . And apply for jobs outside Magnus.<br>→ Earn up to: ₦5,000/day ≈ ₦150,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 📣 Magnus runs the ads; you keep the profit. No ad skills needed.<br>→ Earn up to: 5 sales/month × ₦5,000 = ₦25,000</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ With this Entry Plan you can not create a digital product, you won’t have access to all digital courses and tools, your resale rights are limited but you can earn upto 200k monthly with hardwork.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⚡ Promoters in your network pay you daily. Each promoter gives you ₦7,500/day.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👉🔛 Needs renewal every 4 months.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🔗 If anyone joins with your link, you get ₦17,100; for each person they invite, you get ₦1,300.<br>→ Earn up to: ₦17,100 per direct + ₦350 per 2nd-level (e.g., 5 directs + 20 2nd-level = ₦111,500)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👑 VIP group access. Learn directly from people who are earning ₦200k–₦1M/month.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⏳ Limited slots + price change. Only 10 Magnus Lite Entry spots left; last 3 will pay ₦20k. It’s ₦11k now.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+
+                <p>Click the Choose(Magnus Lite) button below this texts to Start with this package.</p>
+
+            
+    </div>
+<div class="actions">
+              <button class="btn primary" data-action="choose-lite">Choose (Magnus Lite)</button>
+            </div>`, false));
+
+        typingThenGlobal(()=>{
+          appendMessage('bot', buildCard('Magnus Pro — ₦17,500', `<a href="#" class="read-more" data-target="step-2---start-earning" style="display:inline-block;margin-top:6px;font-weight:600;text-decoration:underline;">Read more</a>
+<div class="collapsible" data-card="step-2---start-earning" style="display:none;"><img loading="lazy" src='Magnuspr2.png' alt='Step 2' style='max-width:100%;margin-bottom:10px;'>
+            <ul>
+              
+            </ul>
+                <ul>
+                <li>⭐️ 🛡️ Refund protection. If you don’t earn up to your application fee in 1 month, request a refund.<br>→ : Your ₦17,500 is protected</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🎓 Learn a skill → get certified → Magnus gives you jobs and you start earning. No long process.<br>→ Earn up to: ₦5,000/day ≈ ₦150,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 📣 Magnus runs the ads; you keep the profit. No ad skills needed.<br>→ Earn up to: 30 sales/month × ₦20,000 = ₦600,000</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🏆 Magnus Business tier = bigger earnings + recognition. Gifts, shout-outs, top-earner board.<br>→ Earn up to: ≈ ₦550,000/month;</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⚡ Promoters in your network pay you daily. Each promoter gives you ₦7,500/day.<br>→ : 2 promoters = ₦15,000/day ≈ ₦450,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ Entry fee must be renewed every 6 months</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🔗 No referrals needed to earn. But if someone joins with your link, you get ₦11,500; for each person they invite, you get ₦1,300.<br>→ Earn up to: ₦11,500 per direct + ₦650 per 2nd-level (e.g., 5 directs + 20 2nd-level = ₦75,000)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👑 VIP group access. Learn directly from people who are earning ₦1M–₦3M/month.<br>→ Earn up to: ₦1,000,000–₦3,000,000/month by copying them</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⏳ Limited slots + price change. Only 10 Magnus Business Entry spots left; last 3 will pay ₦50k. It’s ₦17k now.<br>→ Earn up to: Save ₦33,000 if you join before the increase</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ You can upgrade to Magnus Business Plan Later.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+
+                <p>Click the Choose(Magnus Pro) button below this texts to Start with this package.</p>
+
+            
+    </div>
+<div class="actions">
+              <button class="btn primary" data-action="choose-pro">Choose (Magnus Pro)</button>
+            </div>`, false));
+
+          typingThenGlobal(()=>{
+            appendMessage('bot', buildCard('Magnus Business — ₦28,000', `<a href="#" class="read-more" data-target="step-3---grow-bigger" style="display:inline-block;margin-top:6px;font-weight:600;text-decoration:underline;">Read more</a>
+<div class="collapsible" data-card="step-3---grow-bigger" style="display:none;"><img loading="lazy" src='Magnuspr3.png' alt='Step 3' style='max-width:100%;margin-bottom:10px;'>
+              <ul>
+                
+              </ul>
+                <ul>
+                <li>⭐️ 🛡️ Refund protection. If you don’t earn up to your application fee in 1 month, request a refund.<br>→ : Your ₦28,000 is protected</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🆓 No extra fees to continue or upgrade.<br>→ : 0 extra cost</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🎓 Learn a skill → get certified → Magnus gives you jobs and you start earning. No long process.<br>→ Earn up to: ₦5,000/day ≈ ₦150,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 📣 Magnus runs the ads; you keep the profit. No ad skills needed.<br>→ Earn up to: 30 sales/month × ₦20,000 = ₦600,000</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🛒 Create your course or resell tools/courses. Magnus helps sell fast.<br>→ Earn up to: 1 sale/day at ₦20,000 ≈ ₦600,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🏆 As a Magnus Business User, You get bigger earnings + recognition. Gifts, shout-outs,and will be listed among top-earners board.<br>→ Earn up to: ≈ ₦1,000,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⚡ Promoters in your network pay you daily. Each promoter gives you ₦7,500/day.<br>→ : 2 promoters = ₦15,000/day ≈ ₦450,000/month</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 💼 PayFac roles (Only Magnus Business users only). Top partners earn big.<br>→ Earn up to: ₦2,000,000+/month as a PayFac</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🔗 No referrals needed to earn. But if someone joins with your link, you get ₦17,100; for each person they invite, you get ₦1,300.<br>→ Earn up to: ₦17,100 per direct + ₦1,300 per 2nd-level (e.g., 5 directs + 20 2nd-level = ₦111,500)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 🧑‍🏫 Fast support. If you are Stuck, Magnus links you to a top coach for quick fixes.<br>→: Faster setup → earlier earnings (time saved = more money)</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ 👑 VIP group access. Learn directly from people who are earning ₦1M–₦3M/month.<br>→ Earn up to: ₦1,000,000–₦3,000,000/month by copying them</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+
+                <li>⭐️ ⏳ Limited slots + price change. Only 10 Magnus Business Entry spots left; last 3 will pay ₦100k. It’s ₦28k now.<br>→ Earn up to: Save ₦72,000 if you join before the increase</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+
+                <p>Click the Choose(Magnus Business) button below this texts to Start with this package.</p>
+
+            
+    </div>
+<div class="actions">
+              <button class="btn primary" data-action="choose-business">Choose (Magnus Business)</button>
+            </div>`, false));
+
+            typingThenGlobal(()=>{
+              appendMessage('bot', buildCard('Full Presentation', `
+                <ul>
+                  <li>⭐️ <strong>Promoters Only</strong> — Click the button for promotional articles.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                  <li>⭐️ <strong>Researchers only</strong> — Click to read more about Magnus.</li><hr style='border:0;border-bottom:1px solid #ccc;margin:8px 0;'>
+
+
+                </ul>
+                <div class="actions" style="margin-top:10px;">
+                  <button class="btn primary" data-action="choose">Explain More</button>
+                </div>
+              `, false));
+
+              typingThenGlobal(()=>{
+                appendMessage('bot', buildCard('How Magnus Platform Works — Quick Video', `
+                  <p style="margin:0 0 8px 0;">Watch this quick clip, then proceed when you're ready.</p>
+                  <video src="intro2.mp4" controls autoplay playsinline style="width:100%;height:auto;border:1px solid var(--border);border-radius:12px"></video>
+                  <div class="actions" style="margin-top:10px;">
+                    <button class="btn secondary" data-action="choose-business">I am ready</button>
+                  </div>
+                `, false));
+              });
+            });
+          });
+        });
+      });
+    });
+
+    window.addEventListener('DOMContentLoaded', greet);
+
+    /* === Busy guard: prevent button clicks while Magnus is typing / action running === */
+    (function(){
+      try{
+        var __origLock = window.__composerLock;
+        window.__magnusBusy = false;
+
+        function __setButtonsDisabled(dis){
+          try{
+            document.querySelectorAll('button').forEach(function(b){
+              b.disabled = !!dis;
+              b.style.opacity = dis ? 0.6 : '';
+              b.style.cursor = dis ? 'not-allowed' : '';
+            });
+          }catch(e){}
+        }
+
+        // Wrap the existing composer lock to also toggle global busy & buttons
+        window.__composerLock = function(on){
+          try{ if (typeof __origLock === 'function') __origLock(on); }catch(e){}
+          window.__magnusBusy = !!on;
+          __setButtonsDisabled(!!on);
+        };
+
+        // Capture all button-like clicks while busy and block them
+        document.addEventListener('click', function(e){
+          if (window.__magnusBusy){
+            var el = e.target && (e.target.closest('button, .btn, [data-action]'));
+            if (el){
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              alert('Please wait — Magnus is still typing.');
+              return false;
+            }
+          }
+        }, true);
+      }catch(e){}
+    })();
+
+
+    /* === Contacts step guard: block typing until 'Click to Save' or 'Done!!' === */
+    (function(){
+      try{
+        window.__contactsCleared = false;
+
+        function __contactsLock(on){
+          try{
+            input.disabled = !!on;
+            input.setAttribute('aria-disabled', on ? 'true' : 'false');
+            input.style.opacity = on ? 0.6 : 1;
+            const sendBtn = document.querySelector('.send');
+            if (sendBtn){ sendBtn.disabled = !!on; sendBtn.style.opacity = on ? 0.6 : 1; }
+          }catch(e){}
+        }
+
+        function __shouldBlock(){
+          return !!window.__formSubmittedOK && !window.__contactsCleared;
+        }
+
+        function __blockIfNeeded(ev){
+          if (__shouldBlock()){
+            ev.preventDefault && ev.preventDefault();
+            ev.stopImmediatePropagation && ev.stopImmediatePropagation();
+            alert('Please save contacts (Click to Save) or tap Done!! to continue.');
+            input.blur && input.blur();
+            return false;
+          }
+        }
+
+        // Intercept interactions on the input and submit while waiting for contacts step
+        ['focus','keydown','input','paste','click'].forEach(evt => input.addEventListener(evt, __blockIfNeeded, true));
+        form.addEventListener('submit', function(e){
+          if (__shouldBlock()){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            alert('Please save contacts (Click to Save) or tap Done!! to continue.');
+            return false;
+          }
+        }, true);
+
+        // When user clicks "Click to Save" (.vcf) or any "Done!!" button, allow typing
+        document.addEventListener('click', function(e){
+          var saveBtn = e.target && e.target.closest && e.target.closest('.save-contact-btn');
+          var doneBtn = e.target && e.target.closest && e.target.closest('button[data-action="done"]');
+          if (saveBtn || doneBtn){
+            window.__contactsCleared = true;
+            __contactsLock(false);
+          }
+        }, true);
+
+        // If chat was unlocked on form submission, re-lock unless contacts cleared
+        var __origUnlock = window.__unlockChatAfterForm;
+        window.__unlockChatAfterForm = function(){
+          try{ if (typeof __origUnlock === 'function') __origUnlock(); }catch(e){}
+          if (!window.__contactsCleared){ __contactsLock(true); }
+        };
+      }catch(e){}
+    })();
+
+// Read More toggles (non-destructive, minimal)
+function __readMoreToggle(e){
+  const a = e.target.closest('a.read-more');
+  if(!a) return;
+  e.preventDefault();
+  const id = a.getAttribute('data-target');
+  const wrap = a.closest('.card');
+  const coll = wrap && wrap.querySelector('.collapsible[data-card="'+id+'"]');
+  if(!coll) return;
+  const isHidden = coll.style.display === 'none' || !coll.style.display;
+  coll.style.display = isHidden ? 'block' : 'none';
+  a.textContent = isHidden ? 'Hide' : 'Read more';
+  if(isHidden){ wrap.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+}
+document.addEventListener('click', __readMoreToggle);
+
+</script>
+<script>
+(function(){
+  const KEY = "miamorTheme";
+  const allowed = new Set(["original","whatsapp","messenger"]);
+  const wa = document.getElementById("theme-whatsapp-override");
+  const fb = document.getElementById("theme-facebook-override");
+  const tt = document.getElementById("theme-tiktok-override");
+  const yt = document.getElementById("theme-youtube-override");
+  const sc = document.getElementById("theme-snapchat-override");
+  const ig = document.getElementById("theme-instagram-override");
+  const tg = document.getElementById("theme-telegram-override");
+  const ml = document.getElementById("theme-messenger-override");
+  if (wa) wa.disabled = true;
+  if (fb) fb.disabled = true;
+  if (tt) tt.disabled = true;
+  if (yt) yt.disabled = true;
+  if (sc) sc.disabled = true;
+  if (ig) ig.disabled = true;
+  if (tg) tg.disabled = true;
+  if (ml) ml.disabled = true;
+
+  const sw = document.querySelector(".theme-switcher");
+  if (!sw) return;
+  const toggle = sw.querySelector(".theme-toggle");
+  const menu = sw.querySelector(".theme-menu");
+  function setOpen(open){ toggle.setAttribute("aria-expanded", String(open)); if(open) menu.removeAttribute("hidden"); else menu.setAttribute("hidden",""); }
+  toggle.addEventListener("click", (e)=>{ e.stopPropagation(); setOpen(toggle.getAttribute("aria-expanded")!=="true"); });
+  document.addEventListener("click", (e)=>{ if(!sw.contains(e.target)) setOpen(false); });
+  document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") setOpen(false); });
+
+  function enableSheet(t){
+    if (wa) wa.disabled = (t !== "whatsapp");
+    if (fb) fb.disabled = (t !== "facebook");
+    if (tt) tt.disabled = (t !== "tiktok");
+    if (yt) yt.disabled = (t !== "youtube");
+    if (sc) sc.disabled = (t !== "snapchat");
+    if (ig) ig.disabled = (t !== "instagram");
+    if (tg) tg.disabled = (t !== "telegram");
+    if (ml) ml.disabled = (t !== "messenger");
+  }
+  function applyTheme(t){
+    if (!allowed.has(t)) t = "whatsapp";
+    enableSheet(t);
+    localStorage.setItem(KEY, t);
+    sw.querySelectorAll(".swatch").forEach(b=>b.classList.toggle("active", b.dataset.theme===t));
+  }
+  sw.addEventListener("click", (e)=>{
+    const btn = e.target.closest(".swatch");
+    if (!btn) return;
+    applyTheme(btn.dataset.theme);
+    setOpen(false);
+  });
+
+  // Draggable preserved
+  let dragging=false, sx=0, sy=0, sl=0, st=0, rw=0, rh=0;
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+  sw.addEventListener("pointerdown", (e)=>{
+    try{ sw.setPointerCapture(e.pointerId); }catch(_){}
+    dragging=true; const r=sw.getBoundingClientRect(); rw=r.width; rh=r.height; sx=e.clientX; sy=e.clientY; sl=r.left; st=r.top;
+  });
+  window.addEventListener("pointermove", (e)=>{
+    if(!dragging) return;
+    const left=clamp(sl+(e.clientX-sx),0, innerWidth-rw);
+    const top =clamp(st+(e.clientY-sy),0, innerHeight-rh);
+    sw.style.left = left+"px"; sw.style.top = top+"px"; sw.style.right="auto"; sw.style.bottom="auto";
+  });
+  window.addEventListener("pointerup", ()=>{ dragging=false; try{ localStorage.setItem("miamorThemePos", JSON.stringify({left: sw.style.left, top: sw.style.top})) }catch(_){} });
+  try{ const pos=JSON.parse(localStorage.getItem("miamorThemePos")||"null"); if(pos&&pos.left&&pos.top){ sw.style.left=pos.left; sw.style.top=pos.top; sw.style.right="auto"; sw.style.bottom="auto"; } }catch(_){}
+
+  // Default stays ORIGINAL
+  let saved = localStorage.getItem(KEY) || "whatsapp";
+  if (!allowed.has(saved)) saved = "whatsapp";
+  applyTheme(saved);
+})();
+</script>
+<!-- BEGIN: New-IP popup video (add-only) -->
+<script>
+/* New-IP popup video (add-only) */
+(function(){
+  const KEY_SUFFIX = 'firstVisitVideoShown';
+
+  function showFirstVisitVideo(){
+    if (document.querySelector('.promo')) return; // avoid duplicates
+    const wrap = document.createElement('div');
+    wrap.className = 'promo';
+    wrap.innerHTML = `
+      <div class="promo-card" role="dialog" aria-label="How to register video">
+        <div class="promo-head">
+          <span>Quick Start</span>
+          <button class="promo-close" aria-label="Close" type="button">✕</button>
+        </div>
+        <div class="promo-body">
+          <figure>
+            <video id="magnus_first_visit_video"
+                   autoplay
+                   playsinline
+                   controls
+                   preload="auto"
+                   style="border-radius:12px;border:1px solid var(--border);width:100%;height:auto;">
+              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            </video>
+            <figcaption>
+              <h1 style="margin:8px 0 0;font-size:1.05rem;line-height:1.2;">
+                Watch How To Register Fast And Earn Now
+              </h1>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(wrap);
+
+    const close = wrap.querySelector('.promo-close');
+    function closeAndRemember(){
+      try { localStorage.setItem(__key(KEY_SUFFIX), '1'); } catch(e){}
+      wrap.remove();
+    }
+    close.addEventListener('click', closeAndRemember);
+    wrap.addEventListener('click', (e)=>{ if (e.target === wrap) closeAndRemember(); });
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    try{
+      // Uses your existing IP + key helpers
+      if (typeof __getIP === 'function') await __getIP();
+      if (typeof __key !== 'function') { showFirstVisitVideo(); return; }
+      const seenKey = __key(KEY_SUFFIX);
+      if (!localStorage.getItem(seenKey)) {
+        showFirstVisitVideo();
+      }
+    }catch(e){
+      // Fallback: still show once if helpers fail
+      showFirstVisitVideo();
+    }
+  });
+})();
+</script>
+<!-- END: New-IP popup video (add-only) -->
+<script>
+// === Upload gating: enable only after Payment Details viewed OR user says they paid ===
+(function(){
+  try{
+    const chat = document.getElementById('chat');
+    const form = document.getElementById('composer');
+    const input = document.getElementById('msg');
+    const ub = document.getElementById('uploadBtn');
+
+    if (!ub) return;
+
+    function __isEligible(){
+      let seen = (window.paymentDetailsShown === true);
+      if (!seen && chat && chat.textContent){
+        seen = /payment\s*details/i.test(chat.textContent);
+      }
+      let saidPaid = (window.__saidPaid === true);
+      try{
+        if (!saidPaid && typeof __key === 'function'){
+          saidPaid = (localStorage.getItem(__key('saidPaid')) === '1');
+        }
+      }catch(e){}
+      return !!(seen || saidPaid);
+    }
+
+    function __enforce(){
+      if (__isEligible()){
+        ub.disabled = false;
+        ub.style.pointerEvents = 'auto';
+        ub.setAttribute('aria-disabled','false');
+        ub.title = ub.getAttribute('data-title') || '';
+      }else{
+        ub.disabled = true;
+        ub.style.pointerEvents = 'none';
+        ub.setAttribute('aria-disabled','true');
+        if (!ub.getAttribute('data-title')) ub.setAttribute('data-title', ub.title || '');
+        ub.title = 'View Payment Details or confirm payment to enable';
+      }
+    }
+
+    ub.addEventListener('click', function(ev){
+      if (!__isEligible()){
+        ev.preventDefault();
+        ev.stopPropagation();
+        alert('Please view the Payment Details or say "I have made payment" to enable uploads.');
+        return false;
+      }
+    }, true);
+
+    if (form){
+      form.addEventListener('submit', function(){
+        try{
+          const v = (input && input.value || '').toLowerCase();
+          if (/(i\s*(have|'ve)\s*(made|completed)\s*payment)|(i\s*have\s*paid)|(payment\s*done)|\bpaid\b/.test(v)){
+            window.__saidPaid = true;
+            if (typeof __key === 'function'){
+              try{ localStorage.setItem(__key('saidPaid'), '1'); }catch(e){}
+            }
+            setTimeout(__enforce, 0);
+          }
+        }catch(e){}
+      }, true);
+    }
+
+    if (window.MutationObserver && chat){
+      const mo2 = new MutationObserver(function(){
+        try{
+          const txt = chat.textContent || '';
+          if (/payment\s*details/i.test(txt)){
+            window.paymentDetailsShown = true;
+            if (typeof __saveFlags === 'function') __saveFlags();
+            __enforce();
+          }
+        }catch(e){}
+      });
+      mo2.observe(chat, { childList:true, subtree:true });
+    }
+
+    __enforce();
+  }catch(e){}
+})();
+</script>
+<script>
+// Enforce single 'Explain More' button and prevent double-clicks
+(function(){
+  try{
+    function isExplain(btn){
+      return btn && btn.tagName === 'BUTTON' && (btn.textContent || '').trim().toLowerCase() === 'explain more';
+    }
+    function enforce(){
+      var all = Array.prototype.slice.call(document.querySelectorAll('button')).filter(isExplain);
+      if (!all.length) return;
+      var first = all[0];
+      // Hide/disable all others
+      for (var i=1;i<all.length;i++){
+        try{
+          all[i].disabled = true;
+          all[i].style.display = 'none';
+          all[i].setAttribute('aria-hidden','true');
+        }catch(e){}
+      }
+      // Guard the first: allow the first click, then disable permanently
+      if (!first.dataset.explainGuard){
+        first.dataset.explainGuard = '1';
+        first.addEventListener('click', function(ev){
+          if (window.__explainMoreClicked === true){
+            // Already clicked once; block any further clicks
+            ev.preventDefault();
+            ev.stopPropagation();
+            return false;
+          }
+          // Mark clicked and disable after letting existing handlers run
+          window.__explainMoreClicked = true;
+          setTimeout(function(){
+            try{
+              first.disabled = true;
+              first.style.pointerEvents = 'none';
+              first.style.opacity = 0.6;
+              first.setAttribute('aria-disabled','true');
+            }catch(e){}
+          }, 0);
+        }, true);
+      }
+    }
+    // Initial run
+    enforce();
+    // Keep enforcing if UI adds more buttons dynamically
+    if (window.MutationObserver){
+      var mo = new MutationObserver(function(){ enforce(); });
+      mo.observe(document.body, { childList:true, subtree:true });
+    }
+  }catch(e){}
+})();
+</script>
+<script>
+// Explain More: show "Recording Audio" before each demo, ensure all audios appear before Verification & Proof cards
+// Also suppress "Magnus Platform is typing..." until all audios have appeared.
+// Improved: defer by inserting hidden placeholder so upstream code (that uses returned bubble) still works.
+(function(){
+  try{
+    function stripAudios(html){
+      try{
+        html = String(html).replace(/<div[^>]*class=['\"]?[^'\"]*audio-msg[^'\"]*['\"]?[^>]*>[\s\S]*?<\/div>/gi, '');
+        html = html.replace(/<audio[\s\S]*?<\/audio>/gi, '');
+      }catch(e){}
+      return html;
+    }
+
+    if (!window.__appendMessageOriginal && typeof appendMessage === 'function'){
+      window.__appendMessageOriginal = appendMessage;
+      window.appendMessage = function(role, html){
+        try{
+          var blockRe = /(verification\s*&\s*proof|verification\s+&\s+proof|verification|proof|payment\s*details)/i;
+          if (window.__gateProof === true && role === 'bot' && blockRe.test(String(html))){
+            var placeholderBubble = window.__appendMessageOriginal(role, '<div class="__defer" style="display:none"></div>');
+            window.__deferredBot = window.__deferredBot || [];
+            window.__deferredBot.push({ bubble: placeholderBubble, html: String(html) });
+            return placeholderBubble;
+          }
+          var typingRe = /is typing/i;
+          if (window.__audioSeqRunning === true && role === 'bot' && typingRe.test(String(html))){
+            return window.__appendMessageOriginal(role, '<span style="display:none"></span>');
+          }
+        }catch(e){}
+        return window.__appendMessageOriginal(role, html);
+      };
+    }
+
+    function flushDeferred(){
+      try{
+        if (!window.__deferredBot || !window.__deferredBot.length) return;
+        var items = window.__deferredBot.slice(0);
+        window.__deferredBot.length = 0;
+        items.forEach(function(it){
+          try{
+            var bub = it.bubble;
+            var row = bub && bub.parentElement;
+            var safeHTML = stripAudios(it.html);
+            if (bub){ bub.innerHTML = safeHTML; }
+            if (row){ row.style.display = ''; }
+          }catch(e){}
+        });
+      }catch(e){}
+    }
+
+    function onceExplainClicked(){
+      if (window.__explainAudiosQueued === true) return;
+      window.__explainAudiosQueued = true;
+      window.__gateProof = true;
+      window.__audioSeqRunning = true;
+
+      var demos = [
+        { title: 'Demo Audio 1 (2:00)', src: 'MagnusDemo1.mp3' },
+        { title: 'Demo Audio 2 (2:00)', src: 'MagnusDemo2.mp3' },
+        { title: 'Demo Audio 3 (2:00)', src: 'MagnusDemo3.mp3' }
+      ];
+
+      demos.forEach(function(d, i){
+        var t = 3000 * (i + 1);
+        setTimeout(function(){
+          try{
+            var recNode = (typeof appendMessage === 'function') ? appendMessage('bot', '<em>Magnus Platform Recording Audio...</em>') : null;
+            setTimeout(function(){
+              try{ if (recNode && recNode.parentElement) recNode.parentElement.remove(); }catch(e){}
+            }, 1100);
+          }catch(e){}
+        }, Math.max(0, t - 1000));
+
+        setTimeout(function(){
+          try{
+            if (typeof appendMessage === 'function'){
+              appendMessage('bot', '<audio class="demo-audio" controls preload="none" src="' + d.src + '"></audio>');
+            }
+          }catch(e){}
+        }, t);
+      });
+
+      setTimeout(function(){
+        window.__gateProof = false;
+        window.__audioSeqRunning = false;
+        flushDeferred();
+      }, 3000 * (demos.length) + 250);
+    }
+
+    document.addEventListener('click', function(ev){
+      var b = ev.target && ev.target.closest ? ev.target.closest('button') : null;
+      if (!b) return;
+      var label = (b.textContent || '').trim().toLowerCase();
+      if (label === 'explain more'){
+        onceExplainClicked();
+      }
+    }, true);
+  }catch(e){}
+})();
+</script>
+<script>
+document.addEventListener('click', function(ev){
+  const btnLite = ev.target.closest('[data-action="choose-lite"]');
+  const btnPro = ev.target.closest('[data-action="choose-pro"]');
+  const btnBiz = ev.target.closest('[data-action="choose-business"]');
+  if (!(btnLite || btnPro || btnBiz)) return;
+  ev.preventDefault();
+  if (btnLite){ window.__selectedPlan = { key:'lite', fee: __PLAN_FEES_NGN.lite, label: 'Magnus Lite' }; }
+  if (btnPro){ window.__selectedPlan = { key:'pro', fee: __PLAN_FEES_NGN.pro, label: 'Magnus Pro' }; }
+  if (btnBiz){ window.__selectedPlan = { key:'business', fee: __PLAN_FEES_NGN.business, label: 'Magnus Business' }; }
+  try{
+    appendMessage('user', 'Choose (' + window.__selectedPlan.label + ')');
+    typingThenGlobal(()=>{
+      appendMessage('bot', countryPrompt);
+      expectingCountry = true; __saveFlags();
+    });
+  }catch(e){}
+});
+</script>
+<script>
+(function(){
+  try{
+    const g = document.getElementById('qr_gender');
+    if (g && !g.__patchedGender){
+      g.addEventListener('change', function(){ window.__gender = (this.value || '').toString().trim(); });
+      g.__patchedGender = true;
+    }
+  }catch(e){}
+})();
+</script>
+<script>
+(function(){
+  const ASK_CONTACTS = ["09160014944","09162975627","08143855382","08123162709","0815 7823869"];
+  function getRandomContact(){ return ASK_CONTACTS[Math.floor(Math.random()*ASK_CONTACTS.length)]; }
+  function toIntl(n){
+    const digits = String(n).replace(/\D+/g,'');
+    if (digits.startsWith('234')) return digits;
+    if (digits.startsWith('0')) return '234' + digits.slice(1);
+    return digits;
+  }
+  const MSG = "This is our Verified PayFac Assistant 🔑\nType in your questions and want for replies";
+  document.addEventListener("click", function(e){
+    const el = e.target.closest('[data-action="ask-questions"]');
+    if (!el) return;
+    e.preventDefault();
+    const num = getRandomContact();
+    const waUrl = "https://wa.me/" + toIntl(num) + "?text=" + encodeURIComponent(MSG);
+    try{ if (!window.open(waUrl, "_blank")) { window.location.href = waUrl; } }catch(err){ window.location.href = waUrl; }
+  }, true);
+})();
+</script>
+<script>
+/* === Surgical overrides (per latest instructions) === */
+/* 1) Ask Questions in all Proof/Verification cards => random WhatsApp redirect with prefilled text */
+(function(){
+  const CONTACTS = ["09160014944","09162975627","08143855382","08123162709","08157823869"];
+  function toIntl(n){
+    n = (n||"").replace(/\D/g,"");
+    if (n.startsWith("234")) return n;
+    if (n.startsWith("0")) return "234" + n.slice(1);
+    return "234" + n;
+  }
+  function waUrl(n){
+    const msg = "This is our Verified PayFac Assistant 🔑\nType in your questions and wait for replies.";
+    return "https://wa.me/" + toIntl(n) + "?text=" + encodeURIComponent(msg);
+  }
+  function randomWhatsApp(){
+    try{
+      const num = CONTACTS[Math.floor(Math.random() * CONTACTS.length)];
+      window.location.href = waUrl(num);
+    }catch(e){ /* no-op */ }
+  }
+
+  /* Intercept clicks on 'Ask Questions' inside Proof/Verification cards only */
+  document.addEventListener('click', function(e){
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const label = (btn.textContent || "").trim().toLowerCase();
+
+    /* Guard: 'register with a good coach' must NOT go to WhatsApp */
+    if (label === "E don cast") {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      // Make it behave like "Choose (Magnus Business)"
+      try{
+        if (typeof appendMessage === 'function') appendMessage('user', 'choose-business');
+        if (typeof showProofSequence === 'function') showProofSequence();
+        // hint downstream logic if any
+        window.__selectedPlan = "choose-business";
+      }catch(err){}
+      return;
+    }
+
+    // Only affect 'Ask Questions' **inside** Proof/Verification cards
+    if (label === "ask questions"){
+      const card = btn.closest('.card');
+      if (!card) return;
+      const aria = (card.getAttribute('aria-label') || "") + " " + ((card.querySelector('.head')||{}).textContent || "");
+      if (/\b(proof|verification)\b/i.test(aria)){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        randomWhatsApp();
+      }
+    }
+  }, true);
+
+  /* 2) Ensure Step 5 — Quick Video keeps 'I am ready' button behavior (no change needed to default 'ready' handler).
+        We just avoid touching anything in that card by scoping logic above. */
+
+  /* 3) If there are explicit choose-business/pro/lite buttons, wire them to the generic choose flow */
+  /*document.addEventListener('click', function(e){
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const act = btn.dataset.action;
+    if (act === 'choose-business' || act === 'choose-pro' || act === 'choose-lite'){
+      e.preventDefault();
+      try{
+        if (typeof appendMessage === 'function') appendMessage('user', 'Explain More');
+        if (typeof showProofSequence === 'function') showProofSequence();
+        // also hint plan if available
+        if (act === 'choose-business') window.__selectedPlan = "Magnus Business";
+        if (act === 'choose-pro') window.__selectedPlan = "Magnus Pro";
+        if (act === 'choose-lite') window.__selectedPlan = "Magnus Lite";
+      }catch(err){}
+    }
+  }, true);**/
+})();
+</script>
+<script>
+/* === Inject separate Promo card after Payment Details (with typing first) === */
+(function(){ 
+  if (window.__promoInjectedSeparated) return; 
+  window.__promoInjectedSeparated = true;
+
+  const PROMO_SRC = 'Promo.png';
+  const PROMO_TEXT_RAW = `Magnus Promo will soon end, and those who've secured their slots will reap the benefits in no time. 
+
+Below are our official entry plan fees.
+_____________________________
+
+Magnus lite =₦32,500
+
+Magnus pro =₦66,000
+
+Magnus business= ₦105,000
+
+        *Current promo*
+________________________
+
+Magnus Lite = ₦11,000
+
+Magnus Pro = ₦17,500
+
+Magnus business = ₦28,500`;
+
+  function enhanceTextWithLocalFees(text, country){
+    try{
+      return text.replace(/₦\s?([0-9]{1,3}(?:,[0-9]{3})*)/g, function(m, grp){
+        var num = parseFloat(grp.replace(/,/g,'')) || 0;
+        return m + ' <span class="local-fee" data-country="' + country + '" data-ngn="' + num + '"></span>';
+      });
+    }catch(e){ return text; }
+  }
+
+  function promoCardHTML(country){
+    const body = `
+      <figure style="margin:0">
+        <img src="${PROMO_SRC}" alt="Magnus Promo" style="width:100%;border-radius:12px;border:1px solid var(--border)" loading="lazy">
+        <figcaption style="margin-top:6px;font-size:.92em;line-height:1.4">
+          ${enhanceTextWithLocalFees(PROMO_TEXT_RAW, country).replace(/\n/g,'<br>')}
+        </figcaption>
+      </figure>
+    `;
+    return (typeof buildCard === 'function') ? buildCard('Promo', body) : body;
+  }
+
+  function countryFromCard(el){
+    try{
+      const label = el.getAttribute('aria-label') || '';
+      if (label.includes('—')) return label.split('—')[1].trim();
+      return 'Nigeria';
+    }catch(e){ return 'Nigeria'; }
+  }
+
+  const chat = document.getElementById('chat') || document.body;
+  const seen = new WeakMap();
+
+  function injectAfter(card){
+    if (!card || seen.get(card)) return;
+    seen.set(card, true);
+    const country = countryFromCard(card);
+
+    try {
+      const doAppend = function(){
+        appendMessage('bot', promoCardHTML(country));
+        if (typeof __renderLocalFees === 'function') { try{ __renderLocalFees(); }catch(e){} }
+      };
+
+      if (typeof typingThenGlobal === 'function') {
+        typingThenGlobal(doAppend);
+      } else if (typeof typingThen === 'function') {
+        typingThen(doAppend);
+      } else {
+        doAppend();
+      }
+    }catch(e){ /* ignore */ }
+  }
+
+  Array.from(document.querySelectorAll('.card[aria-label^="Payment Details —"]')).forEach(injectAfter);
+
+  if (window.MutationObserver) {
+    const mo = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        m.addedNodes && Array.from(m.addedNodes).forEach(function(node){
+          if (!(node instanceof Element)) return;
+          if (node.matches && node.matches('.card[aria-label^="Payment Details —"]')) {
+            injectAfter(node);
+          } else {
+            const found = node.querySelectorAll && node.querySelectorAll('.card[aria-label^="Payment Details —"]');
+            if (found && found.length) Array.from(found).forEach(injectAfter);
+          }
+        });
+      });
+    });
+    mo.observe(chat, { childList:true, subtree:true });
+  }
+})();
+</script>
+</body></html>
