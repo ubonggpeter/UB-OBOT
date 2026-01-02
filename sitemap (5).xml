@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+
+  <url>
+    <loc>https://magnus-platform.com/</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+
+    <!-- Images -->
+    <image:image>
+      <image:loc>https://magnus-platform.com/MagnusLogo.png</image:loc>
+      <image:title>Magnus Platform Official Logo</image:title>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://magnus-platform.com/Promo.png</image:loc>
+      <image:title>Magnus Platform Promotional Image</image:title>
+    </image:image>
+
+    <!-- Videos -->
+    <video:video>
+      <video:content_loc>https://magnus-platform.com/intro1.mp4</video:content_loc>
+      <video:title>Magnus Platform Introduction Video</video:title>
+      <video:description>Official introduction to the Magnus Platform ecosystem.</video:description>
+      <video:publication_date>2026-01-02</video:publication_date>
+    </video:video>
+
+    <video:video>
+      <video:content_loc>https://magnus-platform.com/intro2.mp4</video:content_loc>
+      <video:title>Magnus Platform Overview</video:title>
+      <video:description>Overview video explaining how Magnus Platform works.</video:description>
+      <video:publication_date>2026-01-02</video:publication_date>
+    </video:video>
+
+    <video:video>
+      <video:content_loc>https://magnus-platform.com/magnushow.mp4</video:content_loc>
+      <video:title>Magnus Platform Showcase</video:title>
+      <video:description>Showcase of features and benefits of Magnus Platform.</video:description>
+      <video:publication_date>2026-01-02</video:publication_date>
+    </video:video>
+
+  </url>
+</urlset>
